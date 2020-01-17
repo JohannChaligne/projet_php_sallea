@@ -80,13 +80,13 @@ include 'inc/nav.inc.php';
             <div class="col-12">
                 <form method="post" action="">
                     <div class="row">
-                        <div class="offset-3 col-6">
+                        <div class="offset-3 offset-sm-4 col-sm-4 col-6">
                             <div class="form-group">
                                 <label for="email">Email de votre compte</label>
                                 <input type="text" placeholder="Email" name="email" id="email" class="form-control">
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary w-100">Envoyer</button>
+                                <button type="submit" class="btn btn-info w-100">Envoyer</button>
                             </div>
                         </div>                
                     </div>

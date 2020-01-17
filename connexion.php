@@ -93,21 +93,21 @@ include 'inc/nav.inc.php';
             <div class="col-12">
                 <form method="post" action="">
                     <div class="row">
-                        <div class="offset-3 col-6">
+                        <div class="offset-3 offset-sm-4 col-sm-4 col-6">
                             <div class="form-group">
                                 <label for="pseudo_mail">Identifiant</label>
-                                <input type="text" placeholder="Pseudo ou email" name="pseudo_mail" id="pseudo_mail" class="form-control" value="<?php echo $pseudo_mail; ?>">
+                                <input type="text" placeholder="Pseudo ou Email" name="pseudo_mail" id="pseudo_mail" class="form-control" value="<?php echo $pseudo_mail; ?>">
                             </div>
                             <div class="form-group">
                                 <label for="mdp">Mot de passe</label>
                                 <input type="password" name="mdp" id="mdp" class="form-control" value="">
-                                <a href="oublie_mdp.php">Mot de passe oublié ?</a>
+                                <a href="oublie_mdp.php" class="bg-connexion">Mot de passe oublié ?</a>
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="souvenir_session" id="souvenir_session" value="1"> Se souvenir de moi
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary w-100">Connexion</button>
+                                <button type="submit" class="btn btn-info w-100">Connexion</button>
                             </div>
                         </div>                
                     </div>

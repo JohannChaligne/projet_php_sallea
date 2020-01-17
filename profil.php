@@ -132,7 +132,7 @@ include 'inc/nav.inc.php';
   <div class="row">
   	<div class="col-6">
   		<ul class="list-group">
-			<li class="list-group-item active">Vos informations</li>
+			<li class="list-group-item">Vos informations</li>
 			<li class="list-group-item">N° : <?php echo $_SESSION['membre']['id_membre']?> </li>
   			<li class="list-group-item">Pseudo : <?php echo $_SESSION['membre']['pseudo']?> </li>
   			<li class="list-group-item">Nom : <?php echo $_SESSION['membre']['nom']?> </li>
@@ -175,14 +175,14 @@ include 'inc/nav.inc.php';
   </div>
 
   <div class="row">
-	  	<div class="col-3">
-		<a href="?action=modifier" class="btn btn-outline-primary w-100 mt-2">Modifier votre profil</a>
+	  	<div class="col-4">
+		<a href="?action=modifier" class="btn btn-outline-info w-100 mt-2">Modifier votre profil</a>
 		</div>
-		<div class="col-3">
-		<a href="?action=modifier_mdp" class="btn btn-outline-primary w-100 mt-2">Modifier votre mot de passe</a>
+		<div class="col-4">
+		<a href="?action=modifier_mdp" class="btn btn-outline-info w-100 mt-2">Modifier votre mot de passe</a>
 		</div>
-		<div class="col-3">
-		<a href="?action=commandes_realisees" class="btn btn-outline-primary w-100 mt-2">Vos commandes réalisées</a>
+		<div class="col-4">
+		<a href="?action=commandes_realisees" class="btn btn-outline-info w-100 mt-2">Vos commandes réalisées</a>
 		</div>
 	</div>
 
@@ -219,7 +219,7 @@ include 'inc/nav.inc.php';
                     <input type="file" name="avatar" id="avatar" class="form-control">
                 </div>
                 <div class="form-group">
-                    <button type="submit" name="confirm_update" class="btn btn-primary w-100">Modifier vos données</button>
+                    <button type="submit" name="confirm_update" class="btn btn-info w-100">Modifier vos données</button>
                 </div>
             </form>
 		</div>
@@ -256,7 +256,7 @@ include 'inc/nav.inc.php';
                     <input type="password" name="confirm_mdp" id="confirm_mdp" class="form-control" placeholder="Confirmer votre nouveau mot de passe">
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary w-100">Enregistrer</button>
+                    <button type="submit" class="btn btn-info w-100">Enregistrer</button>
                 </div>
             </form>
 		</div>

@@ -59,7 +59,7 @@ include 'inc/nav.inc.php';
             <div class="col-12">
                 <form method="post" action="">
                     <div class="row">
-                        <div class="offset-3 col-6">
+                        <div class="offset-3 offset-sm-4 col-sm-4 col-6">
                         <div class="form-group">
                                 <label for="mdp">Mot de passe</label>
                                 <input type="password" name="mdp" id="mdp" class="form-control">
@@ -69,7 +69,7 @@ include 'inc/nav.inc.php';
                                 <input type="password" name="confirm_mdp" id="confirm_mdp" class="form-control">
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary w-100">Réinitialiser mon mot de passe</button>
+                                <button type="submit" class="btn btn-info w-100">Réinitialiser mon mot de passe</button>
                             </div>
                         </div>                
                     </div>

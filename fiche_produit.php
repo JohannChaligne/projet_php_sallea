@@ -34,7 +34,7 @@ include 'inc/nav.inc.php';
   <div class="starter-template marge_haute">
     <div class="row">
         <div class="col-8">
-            <h1><?php echo ucfirst($liste_salles_produit_avis['categorie']) . ' ' . ucfirst($liste_salles_produit_avis['titre']) . ' ' . afficheretoile(round($moyenne_avis['moyenne'], 2)); ?></h1>
+            <h1>Salle <?php echo ucfirst($liste_salles_produit_avis['titre']) . ' <span class="couleur-star">' . afficheretoile(round($moyenne_avis['moyenne'], 2)) . '</span> <span class="taille-mini">' . round($moyenne_avis['moyenne'], 2) . '/5 étoiles</span>'; ?></h1>
         </div>
         <div class="offset-2 col-2">
         <?php 
@@ -72,7 +72,7 @@ include 'inc/nav.inc.php';
         <div class="col-4">
             <ul class="list-group">
                 <li class="list-group-item"><i class="fas fa-users"></i> Capacité : <?php echo $liste_salles_produit_avis['capacite']; ?></li>
-                <li class="list-group-item"><i class="fas fa-chess-rook"></i> Categorie : <?php echo $liste_salles_produit_avis['categorie']; ?></li>
+                <li class="list-group-item"><i class="fas fa-chess-rook"></i> Categorie : <?php echo ucfirst($liste_salles_produit_avis['categorie']); ?></li>
             </ul>
         </div>
         <div class="col-4">
@@ -136,7 +136,7 @@ include 'inc/nav.inc.php';
         </select>
         <label for="commentaire">Commentaire</label>
 		<textarea name="commentaire" id="commentaire" class="form-control"></textarea>
-        <input type="submit" class="btn btn-primary w-100 mt-2" value="Poster" name="submit_commentaire">
+        <input type="submit" class="btn btn-info w-100 mt-2" value="Poster" name="submit_commentaire">
         </div>
         <div class="col-6">
         <br>
@@ -187,7 +187,7 @@ include 'inc/nav.inc.php';
     <?php 
     $titre = $liste_salles_produit_avis['titre'];
     $categorie = $liste_salles_produit_avis['categorie'];
-    $recup_infos_salle = $pdo->prepare("SELECT *, date_format(date_arrivee, '%d/%m/%Y') AS date_arrivee, date_format(date_depart, '%d/%m/%Y') AS date_depart FROM salle, produit WHERE salle.id_salle = produit.id_salle AND titre = :titre AND categorie = :categorie LIMIT 0,4");
+    $recup_infos_salle = $pdo->prepare("SELECT *, date_format(date_arrivee, '%d/%m/%Y') AS date_arrivee, date_format(date_depart, '%d/%m/%Y') AS date_depart FROM salle, produit WHERE salle.id_salle = produit.id_salle AND titre = :titre AND categorie = :categorie ORDER BY date_arrivee ASC LIMIT 0,4");
     $recup_infos_salle->bindParam(':titre', $titre, PDO::PARAM_STR);
     $recup_infos_salle->bindParam(':categorie', $categorie, PDO::PARAM_STR);
     $recup_infos_salle->execute();
@@ -195,26 +195,27 @@ include 'inc/nav.inc.php';
     while($ligne = $recup_infos_salle->fetch(PDO::FETCH_ASSOC)){
         echo '<div class="col-3">';
         echo '<div class="card mt-3">
-                <img src="' . URL . $liste_salles_produit_avis['photo'] . '" class="card-img-top p-2" alt="' . $liste_salles_produit_avis['titre'] . '">
-                <div class="card-body">
-                    <div class="row">
-                        <h5 class="card-title col-6">' . ucfirst($ligne['titre']) . '</h5>
-                        <p class="card-text offset-2 col-4">' . $ligne['prix'] . ' €</p>
-                    </div>
-                    <p class="card-text">' . iconv_substr($liste_salles_produit_avis['description'], 0, 20) . '...</p>
-                    <p class="card-text"><i class="fas fa-calendar-week"></i> ' . $ligne['date_arrivee'] . ' au ' . $ligne['date_depart'] . '</p>
-                    <div class="row">
-                        <div class="col-7"><p class="card-text">' . round($moyenne_avis['moyenne'], 2) . ' / 5 étoiles</p></div>
-                        <a class="offset-1 col-4" href="fiche_article.php?id_produit=' . $ligne['id_produit'] . '" class="btn btn-primary"><i class="fas fa-search"></i> Voir</a>
-                    </div>
-                </div>
-            </div>';
+        <img src="' . URL . $liste_salles_produit_avis['photo'] . '" class="card-img-top p-2" alt="' . $ligne['titre'] . '">
+        <div class="card-body">
+        <div class="row">
+            <h5 class="card-title col-8">Salle ' . ucfirst($ligne['titre']) . '</h5>
+            <p class="card-text col-4"><span class="badge-info badge_price">' . $ligne['prix'] . ' €</span></p>
+        </div>
+        <p class="card-text"><span class="couleur-star">' . afficheretoile(round($moyenne_avis['moyenne'], 2)) . '</span> <span class="taille-mini">' . round($moyenne_avis['moyenne'], 2) . '/5 étoiles</span></p>
+        <p class="card-text">Lieu : ' . ucfirst($liste_salles_produit_avis['ville']) . '</p>
+        <p class="card-text">' . iconv_substr($liste_salles_produit_avis['description'], 0, 60) . '...</p>
+        <p class="card-text"><i class="fas fa-calendar-week"></i> ' . $ligne['date_arrivee'] . ' au ' . $ligne['date_depart'] . '</p>
+        <div class="row">
+            <a class="btn btn-info col-12" href="fiche_produit.php?id_produit=' . $ligne['id_produit'] . '" class="btn btn-info"><i class="fas fa-search"></i> Voir le produit</a>
+        </div>
+        </div>';
+        echo '</div>';
         echo '</div>';
     }
     echo '</div>'; ?>
     <div class="row">
         <div class="col-3">
-            <a href="location_salle.php">Revenir au catalogue</a>
+            <a href="location_salle.php" class="bg_fiche_produit_home">Revenir au catalogue</a>
         </div>
     </div>
   

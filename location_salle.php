@@ -85,7 +85,7 @@ include 'inc/header.inc.php';
 include 'inc/nav.inc.php';
 ?>
 
-<main role="main" class="container">
+<main role="main" class="container main_bg">
 
   <div class="starter-template text-center marge_haute">
     <h1>Location de salle</h1>
@@ -94,7 +94,7 @@ include 'inc/nav.inc.php';
   	<div class="col-3">
           <form method="post" action="location_salle.php">
             <div class="form-group">
-                <a href="location_salle.php">Effacer les critères sélectionnés</a>
+                <a href="location_salle.php" class="reset_filtre" style="text-decoration: underline;">Effacer les critères sélectionnés</a>
             </div>
             <?php
             // FILTRE PAR CATEGORIE
@@ -164,7 +164,7 @@ include 'inc/nav.inc.php';
             </div>
             
             <div class="form-group">
-                <button type="submit" name='submit_filtre' class="btn btn-primary w-100 mt-2">Valider</button>
+                <button type="submit" name='submit_filtre' class="btn btn-info w-100 mt-2">Valider</button>
 			</div>
             </form> 
   	</div>
@@ -180,18 +180,18 @@ include 'inc/nav.inc.php';
 
   				echo '<div class="col-4">';
   				echo '<div class="card mt-3">
-						<img src="' . URL . $salle['photo'] . '" class="card-img-top p-2" alt="' . $salle['titre'] . '">
+                        <img src="' . URL . $salle['photo'] . '" class="card-img-top p-2" alt="' . $salle['titre'] . '">
                         <div class="card-body">
                         <div class="row">
-                            <h5 class="card-title col-8">' . ucfirst($salle['titre']) . '</h5>
-                            <p class="card-text col-4">' . $salle['prix'] . ' €</p>
+                            <h5 class="card-title col-8">Salle ' . ucfirst($salle['titre']) . '</h5>
+                            <p class="card-text col-4"><span class="badge-info badge_price">' . $salle['prix'] . ' €</span></p>
                         </div>
-                        <p class="card-text">Située à ' . ucfirst($salle['ville']) . '.</p>
-                        <p class="card-text">' . iconv_substr($salle['description'], 0, 20) . '...</p>
+                        <p class="card-text"><span class="couleur-star">' . afficheretoile(round($liste_avis['moyenne'], 2)) . '</span> <span class="taille-mini">' . round($liste_avis['moyenne'], 2) . '/5 étoiles</span></p>
+                        <p class="card-text">Lieu : ' . ucfirst($salle['ville']) . '</p>
+                        <p class="card-text">' . iconv_substr($salle['description'], 0, 60) . '...</p>
                         <p class="card-text"><i class="fas fa-calendar-week"></i> ' . $salle['date_arrivee'] . ' au ' . $salle['date_depart'] . '</p>
-                        <p class="card-text">' . afficheretoile(round($liste_avis['moyenne'], 2)) . '</p>
                         <div class="row">
-                            <a class="offset-8 col-4" href="fiche_produit.php?id_produit=' . $salle['id_produit'] . '" class="btn btn-primary"><i class="fas fa-search"></i> Voir</a>
+                            <a class="btn btn-info col-12" href="fiche_produit.php?id_produit=' . $salle['id_produit'] . '" class="btn btn-info"><i class="fas fa-search"></i> Voir le produit</a>
                         </div>
 					</div>
 					</div>';

@@ -149,7 +149,7 @@ include 'inc/nav.inc.php';
             <div class="col-12">
                 <form method="post" action="">
                     <div class="row">
-                        <div class="offset-2 col-8">
+                        <div class="offset-3 col-6">
                             <div class="form-group">
                                 <label for="pseudo">Pseudo</label>
                                 <input type="text" name="pseudo" id="pseudo" class="form-control" value="<?php echo $pseudo; ?>">
@@ -182,7 +182,7 @@ include 'inc/nav.inc.php';
                                 </select>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary w-100">Inscription</button>
+                                <button type="submit" class="btn btn-info w-100">Inscription</button>
                             </div>
                         </div>
                     </div>

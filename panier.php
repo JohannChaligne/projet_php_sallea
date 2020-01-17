@@ -119,7 +119,7 @@ include 'inc/nav.inc.php';
                         $nb_produit = sizeof($_SESSION['panier']['prix']);
                         $nb_produit = count($_SESSION['panier']['id_produit']);
                         for($i = 0; $i < $nb_produit ; $i++){
-                            echo '<tr><td>'.$_SESSION['panier']['id_produit'][$i].'</td><td>'.'<span class="p-2 badge badge-pill badge-warning w-100">'.$_SESSION['panier']['titre'][$i].'</span></td><td>'.$_SESSION['panier']['date_arrivee'][$i].'</td><td>'.$_SESSION['panier']['date_depart'][$i].'</td><td>'.$_SESSION['panier']['prix'][$i].' €</td></tr>';
+                            echo '<tr><td>'.$_SESSION['panier']['id_produit'][$i].'</td><td>'.'<span class="p-2 badge badge-pill badge-info w-100">'.$_SESSION['panier']['titre'][$i].'</span></td><td>'.$_SESSION['panier']['date_arrivee'][$i].'</td><td>'.$_SESSION['panier']['date_depart'][$i].'</td><td>'.$_SESSION['panier']['prix'][$i].' €</td></tr>';
 
                             // calcul du montant total du panier
                             $montant_total += ($_SESSION['panier']['prix'][$i]);

@@ -17,12 +17,12 @@ $msg = '';
 session_start();
 
 // Déclaration de constante
-define('URL', 'http://localhost/php/projet_back_end/'); // Il faudra faire attention lorsque le site sera en ligne car cela va être modifié. 
+define('URL', 'projet_sallea/'); // Il faudra faire attention lorsque le site sera en ligne car cela va être modifié. 
 
 // Constante contenant la racine serveur.
 define('SERVER_ROOT', $_SERVER['DOCUMENT_ROOT']);
 
 // Constante chemin du dossier photo depuis la racine serveur
-define('ROOT_URL', '/php/projet_back_end/');
+define('ROOT_URL', 'projet_sallea/');
 
 include 'fonction.inc.php';
