@@ -5,7 +5,7 @@ include 'inc/header.inc.php';
 include 'inc/nav.inc.php';
 ?>
 
-<main role="main" class="container">
+<main class="container">
 
   <div class="starter-template text-center">
     <h1>Mentions Légales</h1>

@@ -31,13 +31,14 @@ if(isset($_POST['email'])) {
             $maj_mdp_par_mail->bindParam(':id_membre', $id_user, PDO::PARAM_STR);
             $maj_mdp_par_mail->bindParam(':reset_mdp', $reset_token, PDO::PARAM_STR);
             $maj_mdp_par_mail->execute();
+            // Envoi du mail pour le lien du changement de Mot de passe
             $sujet_mail = 'Reinitialisation de votre mot de passe chez SalleA';
             $message_mail = '<div class="row">';
             $message_mail .= '<div class="offset-1 col-5">';
-            $message_mail .= '<p>Entreprise SalleA</p>';
-            $message_mail .= '<p>Adresse</p>';
-            $message_mail .= '<p>Code Postal + Ville</p>';
-            $message_mail .= '<p>N° SIRET</p>';
+            $message_mail .= "<p>Entreprise SalleA</p>";
+            $message_mail .= "<p>Adresse : 37 rue Saint-Sébastien</p>";
+            $message_mail .= '<p>Code Postal - Ville : 75011 Paris</p>';
+            $message_mail .= '<p>N° SIRET : 456 456 546 645 RCS PARIS</p>';
             $message_mail .= '</div>';
             $message_mail .= '</div>';
             $message_mail .= '<br>';
@@ -47,17 +48,18 @@ if(isset($_POST['email'])) {
             $message_mail .= '<div class="offset-1 col-10">';
             $message_mail .= '<p>Bonjour cher membre,</p>';
             $message_mail .= '<p>Nous avons reçu une demande pour réinitialiser votre mot de passe.</p>';
-            $message_mail .= "<p>Si vous n'avez pas fait la demande, ignorez simplement ce message. Sinon, vous pouvez réinitialiser votre mot de passe via ce <a href='http://localhost/php/projet_back_end/reset_mdp.php?id_membre=$id_user&token=$reset_token'>lien</a>.</p>";
+            $message_mail .= "<p>Si vous n'avez pas fait la demande, ignorez simplement ce message. Sinon, vous pouvez réinitialiser votre mot de passe via ce <a href='". URL . "reset_mdp.php?id_membre=$id_user&token=$reset_token'>lien</a>.</p>";
             $message_mail .= '<p>Merci.</p>';
             $message_mail .= '<p>L\'équipe SalleA.</p>';
             $message_mail .= '</div>';
             $message_mail .= '</div>';
-            $headers = 'Content-type: text/html; charset="UTF-8"';
+            $headers = "From: postmaster@johann-chaligne.fr\n";
+            $headers .= "Reply-To: postmaster@johann-chaligne.fr\n";
+            $headers .= 'Content-Type: text/html; charset="UTF-8"';
             mail($email, $sujet_mail, $message_mail, $headers);
             
             header('location:connexion.php');
-        }   
-        else {
+        }  else {
             $msg .= '<div class="alert alert-danger">ATTENTION,<br>Cette adresse mail n\'existe pas.</div>';
         }
     }
@@ -66,35 +68,27 @@ if(isset($_POST['email'])) {
 include 'inc/header.inc.php';
 include 'inc/nav.inc.php';
 ?>
-
-<html>
-    <head>
-    <meta charset="utf-8">
-    </head>
-    <body>
-        <main role="main" class="container">
-            <div class="starter-template text-center marge_haute">
-                <h1>MOT DE PASSE OUBLIE ?</h1>
-                <p class="lead"><?php echo $msg; ?></p>
-            </div>
-            <div class="col-12">
-                <form method="post" action="">
-                    <div class="row">
-                        <div class="offset-3 offset-sm-4 col-sm-4 col-6">
-                            <div class="form-group">
-                                <label for="email">Email de votre compte</label>
-                                <input type="text" placeholder="Email" name="email" id="email" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-info w-100">Envoyer</button>
-                            </div>
-                        </div>                
+<main class="container">
+    <div class="starter-template text-center marge_haute">
+        <h1>MOT DE PASSE OUBLIE ?</h1>
+        <p class="lead"><?php echo $msg; ?></p>
+    </div>
+    <div class="col-12">
+        <form method="post">
+            <div class="row">
+                <div class="offset-3 offset-sm-4 col-sm-4 col-6">
+                    <div class="form-group">
+                        <label for="email">Email de votre compte</label>
+                        <input type="text" placeholder="Email" name="email" id="email" class="form-control">
                     </div>
-                </form>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-info w-100">Envoyer</button>
+                    </div>
+                </div>                
             </div>
-        </main><!-- /.container -->
-    </body>
-</html>
+        </form>
+    </div>
+</main>
 
 <?php
 include 'inc/footer.inc.php';

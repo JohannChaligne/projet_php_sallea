@@ -109,7 +109,7 @@ if(
             $msg .= '<div class="alert alert-danger"> ATTENTION,<br> Vous devez obligatoirement remplir le champ "Nom" et "Prénom".</div>'; 
         }
 
-        // Vérification de la validité du prénom
+        // Vérification de la validité du prénom et du nom
         $verif_nom = preg_match('#^[a-zA-Z_]+$#', $nom);
         $verif_prenom = preg_match('#^[a-zA-Z_]+$#', $prenom);
         if(!$verif_nom){
@@ -164,7 +164,7 @@ if(
             $enregistrement_membre->execute();
             $user_id = $pdo->lastInsertId();
             $sujet_mail = 'Confirmation de votre compte SalleA';
-            $message_mail = "Afin de valider votre compte, veuillez cliquez sur ce <a href='http://localhost/php/projet_back_end/confirm.php?id_membre=$user_id&token=$token'>lien</a>.";
+            $message_mail = "Afin de valider votre compte, veuillez cliquez sur ce <a href='http://johann-chaligne.fr/projet_sallea/confirm.php?id_membre=$user_id&token=$token'>lien</a>.";
             $headers = 'Content-type: text/html; charset="UTF-8"';
             mail($email, $sujet_mail, $message_mail, $headers);
             }
@@ -195,124 +195,117 @@ include 'inc/nav_admin.inc.php';
 
 <div id="content-wrapper">
 
-  <div class="container-fluid">
+    <div class="container-fluid">
 
-    <!-- Breadcrumbs-->
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="index.html">Dashboard</a>
-      </li>
-      <li class="breadcrumb-item active">Gestion Membres</li>
-    </ol>
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Gestion Membres</li>
+        </ol>
 
-    <!-- Page Content -->
-    <h1>Gestion des Membres</h1>
-    <hr>
-    <div class="starter-template text-center">
-        <p class="lead"><?php echo $msg; // variable destinée à afficher des messages utilisateurs ?></p>
-        <a href="?action=enregistrement" class="btn btn-outline-primary">Enregistrement membres</a>
-        <a href="?action=affichage" class="btn btn-outline-danger">Affichage des membres</a>
-    </div>
-
-    <?php if(isset($_GET['action']) && ($_GET['action'] == 'enregistrement' || $_GET['action'] == 'modifier')) { ?>
-
-    <div class="row">
-        <div class="col-8 mx-auto">
-            <form method="post" action="" enctype="multipart/form-data">
-                <input type="hidden" name="id_membre" readonly value="<?php echo $id_membre; ?>"> 
-                <div class="form-group">
-                    <label for="pseudo">Pseudo</label>
-                    <input type="text" name="pseudo" id="pseudo" class="form-control" value="<?php echo $pseudo; ?>">
-                </div>
-                <?php
-			        if(!empty($mdp_actuel)) {
-				    // si $mdp_actuel n'est pas vide, on est dans la modif et un mot de passe existe pour le membre à modifier
-				    echo '<div class="form-group"><label for="mdp_actuel">Mot de passe actuel</label>';
-				    echo '<input type="text" name="mdp_actuel" id="mdp_actuel" class="form-control" value="' . $mdp_actuel . '">';
-				    echo '</div>';
-                    }
-			    ?>
-                <div class="form-group">
-                    <label for="mdp">Mot de passe</label>
-                    <input type="text" name="mdp" id="mdp" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" id="email" class="form-control" value="<?php echo $email; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="nom">Nom</label>
-                    <input type="text" name="nom" id="nom" class="form-control" value="<?php echo $nom; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="prenom">Prenom</label>
-                    <input type="text" name="prenom" id="prenom" class="form-control" value="<?php echo $prenom; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="civilite">Civilité</label>
-                    <select name="civilite" id="civilite" class="w-100">
-                        <option value="m">Homme</option>
-                        <option value="f" <?php if($civilite == 'f'){ echo 'selected'; } ?> >Femme</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="statut">Statut</label>
-                    <select name="statut" id="statut" class="w-100">
-                        <option value="2">Admin</option>
-                        <option value="1" <?php if($statut == '1'){ echo 'selected'; } ?> >Membre</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary w-100">Enregistrer</button>
-                </div>
-            </form>
+        <!-- Page Content -->
+        <h1>Gestion des Membres</h1>
+        <hr>
+        <div class="starter-template text-center">
+            <p class="lead"><?php echo $msg; // variable destinée à afficher des messages utilisateurs ?></p>
+            <a href="?action=enregistrement" class="btn btn-outline-primary">Enregistrement membres</a>
+            <a href="?action=affichage" class="btn btn-outline-danger">Affichage des membres</a>
         </div>
-    </div>
-    <?php } 
 
-    if(isset($_GET['action']) && $_GET['action'] == 'affichage') {
-    $liste_membre = $pdo->query("SELECT * FROM membre ORDER BY id_membre");
-    echo '<div class="row">';
-    echo '<div class="col-12">';
+        <?php if(isset($_GET['action']) && ($_GET['action'] == 'enregistrement' || $_GET['action'] == 'modifier')) { ?>
 
-    echo '<p>Nombre total de membres : ' . $liste_membre->rowCount() . '.</p>';
+        <div class="row">
+            <div class="col-8 mx-auto">
+                <form method="post" action="" enctype="multipart/form-data">
+                    <input type="hidden" name="id_membre" readonly value="<?php echo $id_membre; ?>"> 
+                    <div class="form-group">
+                        <label for="pseudo">Pseudo</label>
+                        <input type="text" name="pseudo" id="pseudo" class="form-control" value="<?php echo $pseudo; ?>">
+                    </div>
+                    <?php
+                        if(!empty($mdp_actuel)) {
+                        // si $mdp_actuel n'est pas vide, on est dans la modif et un mot de passe existe pour le membre à modifier
+                        echo '<div class="form-group"><label for="mdp_actuel">Mot de passe actuel</label>';
+                        echo '<input type="text" name="mdp_actuel" id="mdp_actuel" class="form-control" value="' . $mdp_actuel . '">';
+                        echo '</div>';
+                        }
+                    ?>
+                    <div class="form-group">
+                        <label for="mdp">Mot de passe</label>
+                        <input type="text" name="mdp" id="mdp" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="email" class="form-control" value="<?php echo $email; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="nom">Nom</label>
+                        <input type="text" name="nom" id="nom" class="form-control" value="<?php echo $nom; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="prenom">Prenom</label>
+                        <input type="text" name="prenom" id="prenom" class="form-control" value="<?php echo $prenom; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="civilite">Civilité</label>
+                        <select name="civilite" id="civilite" class="w-100">
+                            <option value="m">Homme</option>
+                            <option value="f" <?php if($civilite == 'f'){ echo 'selected'; } ?> >Femme</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="statut">Statut</label>
+                        <select name="statut" id="statut" class="w-100">
+                            <option value="2">Admin</option>
+                            <option value="1" <?php if($statut == '1'){ echo 'selected'; } ?> >Membre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary w-100">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <?php } 
 
-    echo '<table class="table table-bordered">';
-    echo '<tr>';
-    echo '<th class="text-center">id_membre</th><th class="text-center">Pseudo</th><th class="text-center">Nom</th><th class="text-center">Prenom</th><th class="text-center">Email</th><th class="text-center">Civilité</th><th class="text-center">Statut</th><th class="text-center">Date enregistrement</th><th class="text-center">Action</th>';
+        if(isset($_GET['action']) && $_GET['action'] == 'affichage') {
+        $liste_membre = $pdo->query("SELECT * FROM membre ORDER BY id_membre");
+        echo '<div class="row">';
+        echo '<div class="col-12">';
 
-    // une boucle pour afficher les salles dans le tableau
-    while($ligne = $liste_membre->fetch(PDO::FETCH_ASSOC)){
+        echo '<p>Nombre total de membres : ' . $liste_membre->rowCount() . '.</p>';
+
+        echo '<table class="table table-bordered">';
         echo '<tr>';
-        echo '<td>' . $ligne['id_membre'] . '</td>';
-        echo '<td>' . $ligne['pseudo'] . '</td>';
-        echo '<td>' . $ligne['nom'] . '</td>';
-        echo '<td>' . $ligne['prenom'] . '</td>';
-        echo '<td>' . $ligne['email'] . '</td>';
-        echo '<td>' . $ligne['civilite'] . '</td>';
-        echo '<td>' . $ligne['statut'] . '</td>';
-        echo '<td>' . $ligne['date_enregistrement'] . '</td>';
-        echo '<td><a href="?action=modifier&id_membre=' . $ligne['id_membre'] . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_membre=' . $ligne['id_membre'] . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
+        echo '<th class="text-center">id_membre</th><th class="text-center">Pseudo</th><th class="text-center">Nom</th><th class="text-center">Prenom</th><th class="text-center">Email</th><th class="text-center">Civilité</th><th class="text-center">Statut</th><th class="text-center">Date enregistrement</th><th class="text-center">Action</th>';
+
+        // une boucle pour afficher les salles dans le tableau
+        while($ligne = $liste_membre->fetch(PDO::FETCH_ASSOC)){
+            echo '<tr>';
+            echo '<td>' . $ligne['id_membre'] . '</td>';
+            echo '<td>' . $ligne['pseudo'] . '</td>';
+            echo '<td>' . $ligne['nom'] . '</td>';
+            echo '<td>' . $ligne['prenom'] . '</td>';
+            echo '<td>' . $ligne['email'] . '</td>';
+            echo '<td>' . $ligne['civilite'] . '</td>';
+            echo '<td>' . $ligne['statut'] . '</td>';
+            echo '<td>' . $ligne['date_enregistrement'] . '</td>';
+            echo '<td><a href="?action=modifier&id_membre=' . $ligne['id_membre'] . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_membre=' . $ligne['id_membre'] . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
+
+            echo '</tr>';
+        }
 
         echo '</tr>';
-    }
+        echo '</table>';
+        echo '</div>';
+        echo '</div>';
+        }
 
-    echo '</tr>';
-    echo '</table>';
-    echo '</div>';
-    echo '</div>';
-    }
-
-    ?>
-  </div>
-  <!-- /.container-fluid -->
+        ?>
+    </div>
 </div>
-<!-- /.content-wrapper -->
-
-
-
 
 <?php
 include 'inc/footer_admin.inc.php';
-
-

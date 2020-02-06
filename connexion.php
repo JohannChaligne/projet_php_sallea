@@ -32,8 +32,6 @@ if(isset($_COOKIE['souvenir_session'])){
 $pseudo_mail = '';
 $mdp = '';
 
-
-
 if(isset($_POST['pseudo_mail']) && isset($_POST['mdp'])) {
     $pseudo_mail = strip_tags(trim($_POST['pseudo_mail']));
     $mdp = strip_tags(trim($_POST['mdp']));
@@ -46,12 +44,11 @@ if(isset($_POST['pseudo_mail']) && isset($_POST['mdp'])) {
     // Si le pseudo n'est pas correct : 
     if($membre->rowCount() < 1){
         $msg .= '<div class="alert alert-danger">ATTENTION,<br>L\'identifiant et/ou le mot de passe n\'existent pas. Veuillez recommencer !</div>';
-    }
-    else {
+    } else {
         $infos_membre = $membre->fetch(PDO::FETCH_ASSOC);
         // On vérifie le mot de passe hashé
         if(password_verify($mdp, $infos_membre['mdp'])) {
-        // on place les informations du membre récupérées dans la BDD dans la session pour pouvoir les intérroger à tout moment.
+        // on place les informations du membre récupérées de la BDD dans la session pour pouvoir les intérroger à tout moment.
             $_SESSION['membre'] = array();
             $_SESSION['membre']['id_membre'] = $infos_membre['id_membre'];
             $_SESSION['membre']['pseudo'] = $infos_membre['pseudo'];
@@ -72,8 +69,7 @@ if(isset($_POST['pseudo_mail']) && isset($_POST['mdp'])) {
             }
             // une fois la connexion mise en place, on redirige vers la page profil.php
             header('location:profil.php');
-        }   
-        else {
+        } else {
             $msg .= '<div class="alert alert-danger">ATTENTION,<br>L\'identifiant et/ou le mot de passe n\'existent pas. Veuillez recommencer !</div>';
         }
     }
@@ -83,41 +79,37 @@ include 'inc/header.inc.php';
 include 'inc/nav.inc.php';
 ?>
 
-<html>
-    <body>
-        <main role="main" class="container">
-            <div class="starter-template text-center marge_haute">
-                <h1>CONNEXION</h1>
-                <p class="lead"><?php echo $msg; ?></p>
-            </div>
-            <div class="col-12">
-                <form method="post" action="">
-                    <div class="row">
-                        <div class="offset-3 offset-sm-4 col-sm-4 col-6">
-                            <div class="form-group">
-                                <label for="pseudo_mail">Identifiant</label>
-                                <input type="text" placeholder="Pseudo ou Email" name="pseudo_mail" id="pseudo_mail" class="form-control" value="<?php echo $pseudo_mail; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label for="mdp">Mot de passe</label>
-                                <input type="password" name="mdp" id="mdp" class="form-control" value="">
-                                <a href="oublie_mdp.php" class="bg-connexion">Mot de passe oublié ?</a>
-                            </div>
-                            <div class="form-group">
-                                <input type="checkbox" name="souvenir_session" id="souvenir_session" value="1"> Se souvenir de moi
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-info w-100">Connexion</button>
-                            </div>
-                        </div>                
+<main class="container">
+    <div class="starter-template text-center marge_haute">
+        <h1>CONNEXION</h1>
+        <p class="lead"><?php echo $msg; ?></p>
+    </div>
+    <div class="col-12">
+        <form method="post">
+             <div class="row">
+                <div class="offset-3 offset-sm-4 col-sm-4 col-6">
+                    <div class="form-group">
+                        <label for="pseudo_mail">Identifiant</label>
+                        <input type="text" placeholder="Pseudo ou Email" name="pseudo_mail" id="pseudo_mail" class="form-control" value="<?php echo $pseudo_mail; ?>">
                     </div>
-                </form>
+                    <div class="form-group">
+                        <label for="mdp">Mot de passe</label>
+                        <input type="password" name="mdp" id="mdp" class="form-control" value="">
+                        <a href="oublie_mdp.php" class="bg-connexion">Mot de passe oublié ?</a>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="souvenir_session" id="souvenir_session" value="1"> Se souvenir de moi
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-info w-100">Connexion</button>
+                    </div>
+                </div>                
             </div>
-        </main><!-- /.container -->
-    </body>
-</html>
+        </form>
+    </div>
+</main>
 
 <?php
 include 'inc/footer.inc.php';
-?>
+
 

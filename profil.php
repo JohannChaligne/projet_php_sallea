@@ -44,14 +44,14 @@ if(isset($_POST['confirm_update'])){
 				$msg .= '<div class="alert alert-danger"> ATTENTION,<br> Vous devez obligatoirement remplir le champ "Nom" et "Prénom".</div>'; 
 			}
 	
-			// Vérification de la validité du prénom
-			$verif_nom = preg_match('#^[a-zA-Z_]+$#', $nouveau_nom);
-			$verif_prenom = preg_match('#^[a-zA-Z_]+$#', $nouveau_prenom);
+			// Vérification de la validité du prénom et du nom
+			$verif_nom = preg_match('#^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœA-ZÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+-?[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœA-ZÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$#', $nouveau_nom);
+			$verif_prenom = preg_match('#^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœA-ZÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+-?[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœA-ZÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]+$#', $nouveau_prenom);
 			if(!$verif_nom){
-				$msg .= '<div class="alert alert-danger"> ATTENTION,<br> Le nom ne doit pas comporté de caractères speciaux ni de chiffres. Caractères autorisés : a - z et A - Z.</div>';
+				$msg .= '<div class="alert alert-danger"> ATTENTION,<br> Le nom ne doit pas comporté de caractères speciaux ni de chiffres. Caractères autorisés : a - z et A - Z (Accent compris).</div>';
 			}
 			if(!$verif_prenom){
-				$msg .= '<div class="alert alert-danger"> ATTENTION,<br> Le prénom ne doit pas comporté de caractères speciaux ni de chiffres. Caractères autorisés : a - z et A - Z.</div>';
+				$msg .= '<div class="alert alert-danger"> ATTENTION,<br> Le prénom ne doit pas comporté de caractères speciaux ni de chiffres. Caractères autorisés : a - z et A - Z (Accent compris).</div>';
 			}
 			
 			else {
@@ -97,15 +97,11 @@ if(isset($_POST['confirm_update'])){
 				$msg .= '<div class="alert alert-danger"> Erreur durant l\'importation de votre avatar</div>';
 			}
 		}
-	} // Est-ce qu'une avatar a été chargée
+	} 
 }
 
 
-
-
-
-
-
+// Modification du mot de asse
 $mdp = '';
 $confirm_mdp = '';
 
@@ -116,66 +112,81 @@ if(
 		$confirm_mdp = strip_tags(trim($_POST['confirm_mdp']));
 	}
 
+if(isset($_GET['action']) && ($_GET['action'] == 'modifier_mdp')) {
+	if(!empty($_POST)){	
+		if($mdp != $confirm_mdp){
+			$msg .= '<div class="alert alert-danger"> ATTENTION,<br> Les mots de passes ne sont pas identiques.</div>';
+		}
+		else {
+			$id_membre = $_SESSION['membre']['id_membre'];
+			$mdp = password_hash($mdp, PASSWORD_DEFAULT);
+			$modif_mdp = $pdo->prepare("UPDATE membre SET mdp = :mdp WHERE id_membre = :id_membre");
+			$modif_mdp->bindParam(':id_membre', $id_membre, PDO::PARAM_STR);
+			$modif_mdp->bindParam(':mdp', $mdp, PDO::PARAM_STR);
+			$modif_mdp->execute();
+			$msg .= '<div class="alert alert-success"> Votre mot de passe a bien été mis à jour.</div>';
+		}
+	}
+}
 
 include 'inc/header.inc.php';
 include 'inc/nav.inc.php';
 
 ?>
 
-<main role="main" class="container">
+<main class="container">
 
-  <div class="starter-template text-center marge_haute">
-    <h1>PROFIL</h1>
-	<p class="lead">Bienvenue <?php echo $_SESSION['membre']['pseudo']; ?></p>
-	<p class="lead"><?php echo $msg; // variable destinée à afficher des messages utilisateurs ?></p>
-  </div>
-  <div class="row">
-  	<div class="col-6">
-  		<ul class="list-group">
-			<li class="list-group-item">Vos informations</li>
-			<li class="list-group-item">N° : <?php echo $_SESSION['membre']['id_membre']?> </li>
-  			<li class="list-group-item">Pseudo : <?php echo $_SESSION['membre']['pseudo']?> </li>
-  			<li class="list-group-item">Nom : <?php echo $_SESSION['membre']['nom']?> </li>
-  			<li class="list-group-item">Prénom : <?php echo $_SESSION['membre']['prenom']?> </li>
-  			<li class="list-group-item">Email : <?php echo $_SESSION['membre']['email']?> </li>
-  			<li class="list-group-item">Sexe : 
-	  			<?php 
-	  			if($_SESSION['membre']['civilite'] == 'm') {
-	  				echo 'Homme';
-	  			}
-	  			else {
-	  				echo 'Femme';
-	  			}
-	  			?>
-  			</li>
-  			<li class="list-group-item">Statut : 
-  				<?php 
-  				if($_SESSION['membre']['statut'] == 1){
-  					echo 'Membre';
-  				}
-  				else {
-  					echo 'Administrateur';
-  				}
-  				?>	
-  			</li>
-  		</ul>	
-  	</div>
-  	<div class="col-6">
-		  <?php 
-		  $avatar_membre = $pdo->prepare("SELECT avatar FROM membre WHERE id_membre = :id_membre");
-		  $avatar_membre->bindParam(':id_membre', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
-		  $avatar_membre->execute();
-
-		  $infos_avatar = $avatar_membre->fetch(PDO::FETCH_ASSOC);
-		  if(!empty($infos_avatar['avatar'])){ ?>
-			<img src="avatar_users/<?php echo $infos_avatar['avatar']; ?>">
-		  <?php } ?>
-		  
+	<div class="starter-template text-center marge_haute">
+		<h1>PROFIL</h1>
+		<p class="lead">Bienvenue <?php echo $_SESSION['membre']['pseudo']; ?></p>
+		<p class="lead"><?php echo $msg; // variable destinée à afficher des messages utilisateurs ?></p>
 	</div>
-  </div>
+	<div class="row">
+		<div class="col-6">
+			<ul class="list-group">
+				<li class="list-group-item">Vos informations</li>
+				<li class="list-group-item">N° : <?php echo $_SESSION['membre']['id_membre']?> </li>
+				<li class="list-group-item">Pseudo : <?php echo $_SESSION['membre']['pseudo']?> </li>
+				<li class="list-group-item">Nom : <?php echo $_SESSION['membre']['nom']?> </li>
+				<li class="list-group-item">Prénom : <?php echo $_SESSION['membre']['prenom']?> </li>
+				<li class="list-group-item">Email : <?php echo $_SESSION['membre']['email']?> </li>
+				<li class="list-group-item">Sexe : 
+					<?php 
+					if($_SESSION['membre']['civilite'] == 'm') {
+						echo 'Homme';
+					}
+					else {
+						echo 'Femme';
+					}
+					?>
+				</li>
+				<li class="list-group-item">Statut : 
+					<?php 
+					if($_SESSION['membre']['statut'] == 1){
+						echo 'Membre';
+					}
+					else {
+						echo 'Administrateur';
+					}
+					?>	
+				</li>
+			</ul>	
+		</div>
+		<div class="col-6">
+			<?php 
+			$avatar_membre = $pdo->prepare("SELECT avatar FROM membre WHERE id_membre = :id_membre");
+			$avatar_membre->bindParam(':id_membre', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
+			$avatar_membre->execute();
 
-  <div class="row">
-	  	<div class="col-4">
+			$infos_avatar = $avatar_membre->fetch(PDO::FETCH_ASSOC);
+			if(!empty($infos_avatar['avatar'])){ ?>
+				<img src="avatar_users/<?php echo $infos_avatar['avatar']; ?>">
+			<?php } ?>	
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-4">
 		<a href="?action=modifier" class="btn btn-outline-info w-100 mt-2">Modifier votre profil</a>
 		</div>
 		<div class="col-4">
@@ -186,91 +197,77 @@ include 'inc/nav.inc.php';
 		</div>
 	</div>
 
-  <?php if(isset($_GET['action']) && ($_GET['action'] == 'modifier')) { ?>
+	<?php if(isset($_GET['action']) && ($_GET['action'] == 'modifier')) { ?>
 
-  <div class="row">
-	  	<div class="col-8">
-		  <form method="post" action="" enctype="multipart/form-data">  
-		  <div class="form-group">
-                    <label for="pseudo">Pseudo</label>
-                    <input type="text" name="pseudo" id="pseudo" class="form-control" value="<?php echo $_SESSION['membre']['pseudo']; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" id="email" class="form-control" value="<?php echo $_SESSION['membre']['email']; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="nom">Nom</label>
-                    <input type="text" name="nom" id="nom" class="form-control" value="<?php echo $_SESSION['membre']['nom']; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="prenom">Prenom</label>
-                    <input type="text" name="prenom" id="prenom" class="form-control" value="<?php echo $_SESSION['membre']['prenom']; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="civilite">Civilité</label>
-                    <select name="civilite" id="civilite" class="w-100">
-                        <option value="m">Homme</option>
-                        <option value="f" <?php if($_SESSION['membre']['civilite'] == 'f'){ echo 'selected'; } ?> >Femme</option>
-                    </select>
-                </div>
-				<div class="form-group">
-                    <label for="avatar">Avatar</label>
-                    <input type="file" name="avatar" id="avatar" class="form-control">
-                </div>
-                <div class="form-group">
-                    <button type="submit" name="confirm_update" class="btn btn-info w-100">Modifier vos données</button>
-                </div>
-            </form>
-		</div>
-	</div>
-	
-	<?php }
-	if(isset($_GET['action']) && ($_GET['action'] == 'modifier_mdp')) {
-		if(!empty($_POST)){	
-			if(empty($mdp) || $mdp != $confirm_mdp){
-				$msg .= '<div class="alert alert-danger"> ATTENTION,<br> Les mots de passe ne correspondent pas.</div>';
-			}
-			else {
-				$id_membre = $_SESSION['membre']['id_membre'];
-				$mdp = password_hash($mdp, PASSWORD_DEFAULT);
-				$modif_mdp = $pdo->prepare("UPDATE membre SET mdp = :mdp WHERE id_membre = :id_membre");
-				$modif_mdp->bindParam(':id_membre', $id_membre, PDO::PARAM_STR);
-				$modif_mdp->bindParam(':mdp', $mdp, PDO::PARAM_STR);
-				$modif_mdp->execute();
-		
-				$msg .= '<div class="alert alert-success"> Votre mot de passe a bien été mis à jour.</div>';
-			}
-		
-		} ?>
-	
 	<div class="row">
-	  	<div class="col-8">
-		  	<form method="post" action="">  
-                <div class="form-group">
-                    <label for="mdp">Mot de passe</label>
-                    <input type="password" name="mdp" id="mdp" class="form-control" placeholder="Changer votre mot de passe">
+		<div class="col-8">
+		<form method="post" action="" enctype="multipart/form-data">  
+		<div class="form-group">
+					<label for="pseudo">Pseudo</label>
+					<input type="text" name="pseudo" id="pseudo" class="form-control" value="<?php echo $_SESSION['membre']['pseudo']; ?>">
 				</div>
-                <div class="form-group">
-                    <label for="confirm_mdp">Confirmation Mot de passe</label>
-                    <input type="password" name="confirm_mdp" id="confirm_mdp" class="form-control" placeholder="Confirmer votre nouveau mot de passe">
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-info w-100">Enregistrer</button>
-                </div>
-            </form>
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="text" name="email" id="email" class="form-control" value="<?php echo $_SESSION['membre']['email']; ?>">
+				</div>
+				<div class="form-group">
+					<label for="nom">Nom</label>
+					<input type="text" name="nom" id="nom" class="form-control" value="<?php echo $_SESSION['membre']['nom']; ?>">
+				</div>
+				<div class="form-group">
+					<label for="prenom">Prenom</label>
+					<input type="text" name="prenom" id="prenom" class="form-control" value="<?php echo $_SESSION['membre']['prenom']; ?>">
+				</div>
+				<div class="form-group">
+					<label for="civilite">Civilité</label>
+					<select name="civilite" id="civilite" class="w-100">
+						<option value="m">Homme</option>
+						<option value="f" <?php if($_SESSION['membre']['civilite'] == 'f'){ echo 'selected'; } ?> >Femme</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="avatar">Avatar</label>
+					<input type="file" name="avatar" id="avatar" class="form-control">
+				</div>
+				<div class="form-group">
+					<button type="submit" name="confirm_update" class="btn btn-info w-100">Modifier vos données</button>
+				</div>
+			</form>
+		</div>
+	</div>
+		
+	<?php } 
+		if(isset($_GET['action']) && ($_GET['action'] == 'modifier_mdp')) {
+	?>
+		
+	<div class="row">
+		<div class="col-8">
+			<form method="post" action="">  
+				<div class="form-group">
+					<label for="mdp">Mot de passe</label>
+					<input type="password" name="mdp" id="mdp" class="form-control" placeholder="Changer votre mot de passe">
+				</div>
+				<div class="form-group">
+					<label for="confirm_mdp">Confirmation Mot de passe</label>
+					<input type="password" name="confirm_mdp" id="confirm_mdp" class="form-control" placeholder="Confirmer votre nouveau mot de passe">
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-info w-100">Enregistrer</button>
+				</div>
+			</form>
 		</div>
 	</div>
 
-	<?php } ?>
-	<?php if(isset($_GET['action']) && ($_GET['action'] == 'commandes_realisees')) { 
-		$commande = $pdo->prepare("SELECT *, commande.date_enregistrement AS date_commande FROM commande, produit, salle WHERE salle.id_salle = produit.id_salle AND produit.id_produit = commande.id_produit AND id_membre = :id_membre");
-		$commande->bindParam(':id_membre', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
-		$commande->execute();
-		echo '<table class="table table-bordered">';
-		echo '<tr>';
-		echo '<th class="text-center">N° Commande</th><th class="text-center">N° Produit</th><th class="text-center">Titre</th><th class="text-center">Ville</th><th class="text-center">Date Arrivee</th><th class="text-center">Date Départ</th><th class="text-center">Prix</th><th class="text-center">Date de commande</th>';
-		while($liste_commande = $commande->fetch(PDO::FETCH_ASSOC)) {
+	<?php } 
+	// affichage des commandes de l'utilisateur
+		if(isset($_GET['action']) && ($_GET['action'] == 'commandes_realisees')) { 
+			$commande = $pdo->prepare("SELECT *, commande.date_enregistrement AS date_commande FROM commande, produit, salle WHERE salle.id_salle = produit.id_salle AND produit.id_produit = commande.id_produit AND id_membre = :id_membre");
+			$commande->bindParam(':id_membre', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
+			$commande->execute();
+			echo '<table class="table table-bordered">';
+			echo '<tr>';
+			echo '<th class="text-center">N° Commande</th><th class="text-center">N° Produit</th><th class="text-center">Titre</th><th class="text-center">Ville</th><th class="text-center">Date Arrivee</th><th class="text-center">Date Départ</th><th class="text-center">Prix</th><th class="text-center">Date de commande</th>';
+			while($liste_commande = $commande->fetch(PDO::FETCH_ASSOC)) {
 				echo '<tr>';
 				echo '<td>' . $liste_commande['id_commande'] . '</td>';
 				echo '<td>' . $liste_commande['id_produit'] . '</td>';
@@ -282,13 +279,13 @@ include 'inc/nav.inc.php';
 				echo '<td>' . $liste_commande['date_commande'] . '</td>';		
 				echo '</tr>';
 			}
-		
+			
 			echo '</tr>';
 			echo '</table>';
 			echo '</div>';
 			echo '</div>';
 		}
-	?>
+		?>
 
 </main><!-- /.container -->
 

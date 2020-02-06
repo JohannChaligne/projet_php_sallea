@@ -7,18 +7,15 @@ if(empty($_GET['id_produit']) && !intval($_GET['id_produit'])) {
 
 // CODE
 
-// récupération de des données produit en BDD
+// récupération des données dans la table produit et salle en BDD
 $recup_salles_produit_avis = $pdo->prepare("SELECT *, date_format(date_arrivee, '%d/%m/%Y') AS date_arrivee, date_format(date_depart, '%d/%m/%Y') AS date_depart FROM salle, produit WHERE id_produit = :id_produit AND salle.id_salle = produit.id_salle"); 
 $recup_salles_produit_avis->bindParam(':id_produit', $_GET['id_produit'], PDO::PARAM_STR);
 $recup_salles_produit_avis->execute();
 
-// if($recup_salles_produit_avis->rowCount() < 1) {
-// 	header('location:location_salle.php');
-// }
-
 $liste_salles_produit_avis = $recup_salles_produit_avis->fetch(PDO::FETCH_ASSOC);
 $id_salle = $liste_salles_produit_avis['id_salle'];
 
+// Calcul de la moyenne des avis
 $tab_moyenne_avis = $pdo->prepare("SELECT (sum(note)/count(note)) AS moyenne  FROM avis WHERE id_salle = :id_salle");
 $tab_moyenne_avis->bindParam(':id_salle', $id_salle, PDO::PARAM_STR);
 $tab_moyenne_avis->execute();
@@ -29,7 +26,7 @@ include 'inc/header.inc.php';
 include 'inc/nav.inc.php';
 ?>
 
-<main role="main" class="container">
+<main class="container">
 
   <div class="starter-template marge_haute">
     <div class="row">
@@ -52,12 +49,12 @@ include 'inc/nav.inc.php';
     </div>
     <div class="row">
         <div class="col-8">
-            <img src="<?php echo  URL . $liste_salles_produit_avis['photo']; ?>" class="w-75">
+            <img src="<?php echo  URL . $liste_salles_produit_avis['photo']; ?>" class="w-75" alt="photo de la salle <?php $liste_salles_produit_avis['titre']; ?>">
         </div>
         <div class="col-4">
             <ul class="list-group">
                 <li class="list-group-item">Description : <?php echo $liste_salles_produit_avis['description']; ?></li>
-                <li class="list-group-item">Localisation : <iframe width="100%" height="250" src="<?php echo $liste_salles_produit_avis['localisation']; ?>" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe></li>                        
+                <li class="list-group-item">Localisation : <iframe class="style_iframe_localisation" src="<?php echo $liste_salles_produit_avis['localisation']; ?>"></iframe></li>  
             </ul>
         </div>
     </div>
@@ -83,6 +80,7 @@ include 'inc/nav.inc.php';
         </div>
     </div>
     <?php 
+    // Déposer un avis sur la salle
     $pseudo = '';
     $note = '';
     $commentaire = '';
@@ -116,31 +114,30 @@ include 'inc/nav.inc.php';
         }
         else {
             $msg .= '<div class="alert alert-danger"> Vous devez être connecté pour déposer un commentaire. Pour se connecter, <a href="connexion.php">cliquez ici</a>. Si vous n\'êtes toujours pas inscrit, <a href="inscription.php">cliquez ici</a>.</div>';
-    }   
-    }
-  
-        ?>
+        }   
+    }?>
     <div class="row">
         <div class="col-6">
-        <form method="post">
-        <p><?php echo $msg; ?></p>
-        <label>Pseudo</label>
-        <input type="text" class="form-control" name="pseudo" id="pseudo" value="<?php if(user_is_connect()){ echo $_SESSION['membre']['pseudo'];} ?>">
-        <label>Note</label>
-        <select class="form-control" name="note" id="note">
-        <option value="1">1 / 5 étoiles</option>
-        <option value="2">2 / 5 étoiles</option>
-        <option value="3">3 / 5 étoiles</option>
-        <option value="4">4 / 5 étoiles</option>
-        <option value="5">5 / 5 étoiles</option>
-        </select>
-        <label for="commentaire">Commentaire</label>
-		<textarea name="commentaire" id="commentaire" class="form-control"></textarea>
-        <input type="submit" class="btn btn-info w-100 mt-2" value="Poster" name="submit_commentaire">
+            <form method="post">
+                <p><?php echo $msg; ?></p>
+                <label>Pseudo</label>
+                <input type="text" class="form-control" name="pseudo" id="pseudo" value="<?php if(user_is_connect()){ echo $_SESSION['membre']['pseudo'];} ?>">
+                <label>Note</label>
+                <select class="form-control" name="note" id="note">
+                    <option value="1">1 / 5 étoiles</option>
+                    <option value="2">2 / 5 étoiles</option>
+                    <option value="3">3 / 5 étoiles</option>
+                    <option value="4">4 / 5 étoiles</option>
+                    <option value="5">5 / 5 étoiles</option>
+                </select>
+                <label for="commentaire">Commentaire</label>
+		        <textarea name="commentaire" id="commentaire" class="form-control"></textarea>
+                <input type="submit" class="btn btn-info w-100 mt-2" value="Poster" name="submit_commentaire">
+            </form>
         </div>
-        <div class="col-6">
-        <br>
-        <?php 
+        <div class="col-6"><br>
+        <?php
+        // Mettre en place une pagination sur les avis déposés 
         $liste_pagination_com = $pdo->prepare("SELECT *, date_format(avis.date_enregistrement, '%d/%m/%Y') AS date_enregistrement_avis FROM avis, membre WHERE id_salle = :id_salle AND avis.id_membre = membre.id_membre ORDER BY avis.date_enregistrement DESC");
         $liste_pagination_com->bindParam(':id_salle', $id_salle, PDO::PARAM_STR);
         $liste_pagination_com->execute();
@@ -180,11 +177,12 @@ include 'inc/nav.inc.php';
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 mt-4">
             <h2>D'autres produits sont disponibles</h2>
         </div>
     </div>
     <?php 
+    // Proposition des produits de la même salle à des dates différentes
     $titre = $liste_salles_produit_avis['titre'];
     $categorie = $liste_salles_produit_avis['categorie'];
     $recup_infos_salle = $pdo->prepare("SELECT *, date_format(date_arrivee, '%d/%m/%Y') AS date_arrivee, date_format(date_depart, '%d/%m/%Y') AS date_depart FROM salle, produit WHERE salle.id_salle = produit.id_salle AND titre = :titre AND categorie = :categorie ORDER BY date_arrivee ASC LIMIT 0,4");
@@ -206,7 +204,7 @@ include 'inc/nav.inc.php';
         <p class="card-text">' . iconv_substr($liste_salles_produit_avis['description'], 0, 60) . '...</p>
         <p class="card-text"><i class="fas fa-calendar-week"></i> ' . $ligne['date_arrivee'] . ' au ' . $ligne['date_depart'] . '</p>
         <div class="row">
-            <a class="btn btn-info col-12" href="fiche_produit.php?id_produit=' . $ligne['id_produit'] . '" class="btn btn-info"><i class="fas fa-search"></i> Voir le produit</a>
+            <a class="btn btn-info col-12" href="fiche_produit.php?id_produit=' . $ligne['id_produit'] . '"><i class="fas fa-search"></i> Voir le produit</a>
         </div>
         </div>';
         echo '</div>';
@@ -222,7 +220,7 @@ include 'inc/nav.inc.php';
   
     </div>
 
-</main><!-- /.container -->
+</main>
 
 
 <?php

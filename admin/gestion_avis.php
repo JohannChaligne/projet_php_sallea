@@ -47,6 +47,12 @@ if(isset($_GET['action']) && $_GET['action'] == 'supprimer' && isset($_GET['id_a
 	$_GET['action'] = 'affichage';
 }
 
+
+//
+//
+// ENREGISTREMENT AVIS
+//
+//
 if(
     isset($_POST['membre']) &&
     isset($_POST['salle']) &&
@@ -94,26 +100,25 @@ include 'inc/nav_admin.inc.php';
 
 <div id="content-wrapper">
 
-  <div class="container-fluid">
+    <div class="container-fluid">
 
-    <!-- Breadcrumbs-->
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="index.html">Dashboard</a>
-      </li>
-      <li class="breadcrumb-item active">Gestion Avis</li>
-    </ol>
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Gestion Avis</li>
+        </ol>
 
-    <!-- Page Content -->
-    <h1>Gestion des Avis</h1>
-    <hr>
-    <div class="starter-template text-center">
-        <p class="lead"><?php echo $msg; // variable destinée à afficher des messages utilisateurs ?></p>
-        <a href="?action=enregistrement" class="btn btn-outline-primary">Enregistrement avis</a>
-        <a href="?action=affichage" class="btn btn-outline-danger">Affichage des avis</a>
-    </div>
-        <?php if(isset($_GET['action']) && ($_GET['action'] == 'enregistrement' || $_GET['action'] == 'modifier')) { ?>
-
+        <!-- Page Content -->
+        <h1>Gestion des Avis</h1>
+        <hr>
+        <div class="starter-template text-center">
+            <p class="lead"><?php echo $msg; // variable destinée à afficher des messages utilisateurs ?></p>
+            <a href="?action=enregistrement" class="btn btn-outline-primary">Enregistrement avis</a>
+            <a href="?action=affichage" class="btn btn-outline-danger">Affichage des avis</a>
+        </div>
+        <?php if(isset($_GET['action']) && ($_GET['action'] == 'enregistrement' || $_GET['action'] == 'modifier')) { // Modification des avis?>
     </div>
     <div class="row">
         <div class="col-8 mx-auto">
@@ -164,7 +169,7 @@ include 'inc/nav_admin.inc.php';
         </div>
     </div>
     <?php } 
-
+    // Affichage des avis
     if(isset($_GET['action']) && $_GET['action'] == 'affichage') {
     $liste_avis = $pdo->query("SELECT * FROM avis ORDER BY note");
     $recup_tab_salle_et_membre = $pdo->query("SELECT *, date_format(avis.date_enregistrement, '%d/%m/%Y %H:%i:%s') AS date_enregistrement_avis FROM avis, salle, membre WHERE avis.id_salle = salle.id_salle AND avis.id_membre = membre.id_membre");
@@ -198,15 +203,8 @@ include 'inc/nav_admin.inc.php';
     }
 
     ?>
-  </div>
-  <!-- /.container-fluid -->
+    </div>
 </div>
-<!-- /.content-wrapper -->
-
-
-
 
 <?php
 include 'inc/footer_admin.inc.php';
-
-

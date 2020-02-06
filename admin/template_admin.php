@@ -24,7 +24,7 @@ include 'inc/nav_admin.inc.php';
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="index.html">Dashboard</a>
+        <a href="#">Dashboard</a>
       </li>
       <li class="breadcrumb-item active">Blank Page</li>
     </ol>

@@ -172,146 +172,140 @@ include 'inc/nav_admin.inc.php';
 
 <div id="content-wrapper">
 
-  <div class="container-fluid">
+  	<div class="container-fluid">
 
-    <!-- Breadcrumbs-->
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="index.html">Dashboard</a>
-      </li>
-      <li class="breadcrumb-item active">Gestion salle</li>
-    </ol>
+		<!-- Breadcrumbs-->
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="#">Dashboard</a>
+			</li>
+			<li class="breadcrumb-item active">Gestion salle</li>
+		</ol>
 
-    <!-- Page Content -->
-    <h1>Gestion des salles</h1>
-    <hr>
-    <div class="starter-template text-center">
-        <p class="lead"><?php echo $msg; // variable destinée à afficher des messages utilisateurs ?></p>
-        <a href="?action=enregistrement" class="btn btn-outline-primary">Enregistrement des salles</a>
-        <a href="?action=affichage" class="btn btn-outline-danger">Affichage des salles</a>
-    </div>
+		<!-- Page Content -->
+		<h1>Gestion des salles</h1>
+		<hr>
+		<div class="starter-template text-center">
+			<p class="lead"><?php echo $msg; // variable destinée à afficher des messages utilisateurs ?></p>
+			<a href="?action=enregistrement" class="btn btn-outline-primary">Enregistrement des salles</a>
+			<a href="?action=affichage" class="btn btn-outline-danger">Affichage des salles</a>
+		</div>
 
-    <?php if(isset($_GET['action']) && ($_GET['action'] == 'enregistrement' || $_GET['action'] == 'modifier')) { ?>
+		<?php if(isset($_GET['action']) && ($_GET['action'] == 'enregistrement' || $_GET['action'] == 'modifier')) { ?>
 
-    <div class="row">
-  	<div class="col-8 mx-auto">
-  		<form method="post" action="" enctype="multipart/form-data">
-  			<input type="hidden" name="id_salle" readonly value="<?php echo $id_salle; ?>"> 
-  			<div class="from-group">
-  				<label for="titre">Titre</label>
-  				<input type="text" class="form-control" name="titre" id="titre" value="<?php echo $titre; ?>">
-              </div>
-              <div class="form-group">
-				<label for="description">Description</label>
-				<textarea name="description" id="description" class="form-control"><?php echo $description ?></textarea> 
-            </div>
-            <?php
-			if(!empty($photo_actuelle)) {
-				// si $photo_actuelle n'est pas vide, on est dans la modif et une photo existe pour le produit à modifier
-				echo '<div class="form-group"><label>Photo actuelle</label>';
-				echo '<input type="hidden" name="photo_actuelle" value="' . $photo_actuelle .'">';
-				echo '<img src="' . URL . $photo_actuelle . '" class="img-thumbnail w-25">';
-				echo '</div>';
-			}
+		<div class="row">
+		<div class="col-8 mx-auto">
+			<form method="post" action="" enctype="multipart/form-data">
+				<input type="hidden" name="id_salle" readonly value="<?php echo $id_salle; ?>"> 
+				<div class="from-group">
+					<label for="titre">Titre</label>
+					<input type="text" class="form-control" name="titre" id="titre" value="<?php echo $titre; ?>">
+				</div>
+				<div class="form-group">
+					<label for="description">Description</label>
+					<textarea name="description" id="description" class="form-control"><?php echo $description ?></textarea> 
+				</div>
+				<?php
+				if(!empty($photo_actuelle)) {
+					// si $photo_actuelle n'est pas vide, on est dans la modif et une photo existe pour le produit à modifier
+					echo '<div class="form-group"><label>Photo actuelle</label>';
+					echo '<input type="hidden" name="photo_actuelle" value="' . $photo_actuelle .'">';
+					echo '<img src="' . URL . $photo_actuelle . '" class="img-thumbnail w-25">';
+					echo '</div>';
+				}
 
-			?>
-			<div class="from-group">
-  				<label for="photo">Photo</label>
-  				<input type="file" class="form-control" name="photo" id="photo">
-              </div>
-              <div class="from-group">
-  				<label for="pays">Pays</label>
-  				<select class="form-control" name="pays" id="pays">
-  					<option>France</option>
-  				</select>  
-  			</div>
-              <div class="from-group">
-  				<label for="ville">Ville</label>
-  				<select class="form-control" name="ville" id="ville">
-  					<option>Paris</option>
-  					<option <?php if($ville == 'Lyon') {echo 'selected';} ?> >Lyon</option>
-  					<option <?php if($ville == 'Marseille') {echo 'selected';} ?> >Marseille</option>
-  				</select>  
-  			</div>
-              <div class="from-group">
-  				<label for="adresse">Adresse</label>
-  				<input type="text" class="form-control" name="adresse" id="adresse" value="<?php echo $adresse; ?>">
-              </div>
-              <div class="from-group">
-  				<label for="cp">Code Postal</label>
-  				<input type="text" class="form-control" name="cp" id="cp" value="<?php echo $cp; ?>">
-              </div>
-              <div class="from-group">
-  				<label for="capacite">Capacité</label>
-  				<input type="text" class="form-control" name="capacite" id="capacite" value="<?php echo $capacite; ?>">
-  			</div>
-  			<div class="from-group">
-  				<label for="categorie">Categorie</label>
-  				<select class="form-control" name="categorie" id="categorie">
-  					<option>Réunion</option>
-  					<option <?php if($categorie == 'bureau') {echo 'selected';} ?> >Bureau</option>
-  					<option <?php if($categorie == 'formation') {echo 'selected';} ?> >Formation</option>
-  				</select>  
-			  </div>
-			  <div class="from-group">
-  				<label for="localisation">Localisation</label>
-  				<input type="text" class="form-control" name="localisation" id="localisation" value="<?php echo $localisation; ?>">
-  			</div>
-  			<div class="form-group">
-				<button type="submit" class="btn btn-primary w-100 mt-2"><i class="fas fa-pen-alt"></i> Enregistrement</button>
-			</div>
-  		</form>
-  	</div>
-    </div>
+				?>
+				<div class="from-group">
+					<label for="photo">Photo</label>
+					<input type="file" class="form-control" name="photo" id="photo">
+				</div>
+				<div class="from-group">
+					<label for="pays">Pays</label>
+					<select class="form-control" name="pays" id="pays">
+						<option>France</option>
+					</select>  
+				</div>
+				<div class="from-group">
+					<label for="ville">Ville</label>
+					<select class="form-control" name="ville" id="ville">
+						<option>Paris</option>
+						<option <?php if($ville == 'Lyon') {echo 'selected';} ?> >Lyon</option>
+						<option <?php if($ville == 'Marseille') {echo 'selected';} ?> >Marseille</option>
+					</select>  
+				</div>
+				<div class="from-group">
+					<label for="adresse">Adresse</label>
+					<input type="text" class="form-control" name="adresse" id="adresse" value="<?php echo $adresse; ?>">
+				</div>
+				<div class="from-group">
+					<label for="cp">Code Postal</label>
+					<input type="text" class="form-control" name="cp" id="cp" value="<?php echo $cp; ?>">
+				</div>
+				<div class="from-group">
+					<label for="capacite">Capacité</label>
+					<input type="text" class="form-control" name="capacite" id="capacite" value="<?php echo $capacite; ?>">
+				</div>
+				<div class="from-group">
+					<label for="categorie">Categorie</label>
+					<select class="form-control" name="categorie" id="categorie">
+						<option>Réunion</option>
+						<option <?php if($categorie == 'bureau') {echo 'selected';} ?> >Bureau</option>
+						<option <?php if($categorie == 'formation') {echo 'selected';} ?> >Formation</option>
+					</select>  
+				</div>
+				<div class="from-group">
+					<label for="localisation">Localisation</label>
+					<input type="text" class="form-control" name="localisation" id="localisation" value="<?php echo $localisation; ?>">
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary w-100 mt-2"><i class="fas fa-pen-alt"></i> Enregistrement</button>
+				</div>
+			</form>
+		</div>
+		</div>
 
-    <?php } 
+		<?php } 
 
-    if(isset($_GET['action']) && $_GET['action'] == 'affichage') {
-	$liste_salle = $pdo->query("SELECT * FROM salle ORDER BY categorie");
-	echo '<div class="row">';
-	echo '<div class="col-12">';
+		if(isset($_GET['action']) && $_GET['action'] == 'affichage') {
+		$liste_salle = $pdo->query("SELECT * FROM salle ORDER BY categorie");
+		echo '<div class="row">';
+		echo '<div class="col-10">';
 
-	echo '<p>Nombre total de salles : ' . $liste_salle->rowCount() . '.</p>';
+		echo '<p>Nombre total de salles : ' . $liste_salle->rowCount() . '.</p>';
 
-	echo '<table class="table table-bordered">';
-	echo '<tr>';
-	echo '<th class="text-center">id_salle</th><th class="text-center">Titre</th><th class="text-center">Description</th><th class="text-center">Photo</th><th class="text-center">Pays</th><th class="text-center">Ville</th><th class="text-center">Adresse</th><th class="text-center">Code Postal</th><th class="text-center">Capacité</th><th class="text-center">Catégorie</th><th class="text-center">Localisation</th><th class="text-center">Action</th>';
-
-	// une boucle pour afficher les salles dans le tableau
-	while($ligne = $liste_salle->fetch(PDO::FETCH_ASSOC)){
+		echo '<table class="table table-bordered">';
 		echo '<tr>';
-		echo '<td>' . $ligne['id_salle'] . '</td>';
-		echo '<td>' . $ligne['titre'] . '</td>';
-		echo '<td>' . iconv_substr($ligne['description'], 0 , 25) . '...</td>';
-		echo '<td><img src="' . URL . $ligne['photo'] . '" class="img-thumbnail" width="100"></td>'; 
-        echo '<td>' . $ligne['pays'] . '</td>';
-        echo '<td>' . $ligne['ville'] . '</td>';
-		echo '<td>' . $ligne['adresse'] . '</td>';
-		echo '<td>' . $ligne['cp'] . '</td>';
-		echo '<td>' . $ligne['capacite'] . '</td>';
-		echo '<td>' . $ligne['categorie'] . '</td>';
-		echo '<td>' . iconv_substr($ligne['localisation'], 0 , 25) . '...</td>';
-		echo '<td><a href="?action=modifier&id_salle=' . $ligne['id_salle'] . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_salle=' . $ligne['id_salle'] . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
+		echo '<th class="text-center">N°</th><th class="text-center">Titre</th><th class="text-center">Description</th><th class="text-center">Photo</th><th class="text-center">Pays</th><th class="text-center">Ville</th><th class="text-center">Adresse</th><th class="text-center">Code Postal</th><th class="text-center">Capacité</th><th class="text-center">Catégorie</th><th class="text-center">Localisation</th><th class="text-center">Action</th>';
+
+		// une boucle pour afficher les salles dans le tableau
+		while($ligne = $liste_salle->fetch(PDO::FETCH_ASSOC)){
+			echo '<tr>';
+			echo '<td>' . $ligne['id_salle'] . '</td>';
+			echo '<td>' . $ligne['titre'] . '</td>';
+			echo '<td>' . iconv_substr($ligne['description'], 0 , 25) . '...</td>';
+			echo '<td><img src="' . URL . $ligne['photo'] . '" class="img-thumbnail" width="100"></td>'; 
+			echo '<td>' . $ligne['pays'] . '</td>';
+			echo '<td>' . $ligne['ville'] . '</td>';
+			echo '<td>' . $ligne['adresse'] . '</td>';
+			echo '<td>' . $ligne['cp'] . '</td>';
+			echo '<td>' . $ligne['capacite'] . '</td>';
+			echo '<td>' . $ligne['categorie'] . '</td>';
+			echo '<td>' . iconv_substr($ligne['localisation'], 0 , 5) . '...</td>';
+			echo '<td><a href="?action=modifier&id_salle=' . $ligne['id_salle'] . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_salle=' . $ligne['id_salle'] . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
+
+			echo '</tr>';
+		}
 
 		echo '</tr>';
+		echo '</table>';
+		echo '</div>';
+		echo '</div>';
 	}
 
-	echo '</tr>';
-	echo '</table>';
-	echo '</div>';
-	echo '</div>';
-}
+	?>
 
- ?>
-
-  </div>
-  <!-- /.container-fluid -->
+	</div>
 </div>
-<!-- /.content-wrapper -->
-
-
 
 <?php
 include 'inc/footer_admin.inc.php';
-
-

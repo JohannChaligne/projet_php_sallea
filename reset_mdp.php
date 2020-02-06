@@ -7,6 +7,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'deconnexion') {
 }
 
 // CODE
+// Vérification du token et de l'id_membre
 $id_membre = $_GET['id_membre'];
 $reset_mdp = $_GET['token'];
 if(isset($_GET['id_membre']) && isset($_GET['token']) && is_numeric($_GET['id_membre'])){
@@ -17,6 +18,7 @@ if(isset($_GET['id_membre']) && isset($_GET['token']) && is_numeric($_GET['id_me
 
     $infos_membre = $membre->fetch(PDO::FETCH_ASSOC);
 
+    // Modification du mot de passe
         if($infos_membre) {
             if(!empty($_POST)){
                 if(!empty($_POST['mdp']) && $_POST['mdp'] == $_POST['confirm_mdp']){
@@ -45,39 +47,31 @@ else {
 include 'inc/header.inc.php';
 include 'inc/nav.inc.php';
 ?>
-
-<html>
-    <head>
-    <meta charset="utf-8">
-    </head>
-    <body>
-        <main role="main" class="container">
-            <div class="starter-template text-center marge_haute">
-                <h1>ENREGISTREZ VOTRE NOUVEAU MOT DE PASSE</h1>
-                <p class="lead"><?php echo $msg; ?></p>
-            </div>
-            <div class="col-12">
-                <form method="post" action="">
-                    <div class="row">
-                        <div class="offset-3 offset-sm-4 col-sm-4 col-6">
-                        <div class="form-group">
-                                <label for="mdp">Mot de passe</label>
-                                <input type="password" name="mdp" id="mdp" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="confirm_mdp">Confirmation du mot de passe</label>
-                                <input type="password" name="confirm_mdp" id="confirm_mdp" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-info w-100">Réinitialiser mon mot de passe</button>
-                            </div>
-                        </div>                
+<main class="container">
+    <div class="starter-template text-center marge_haute">
+        <h1>ENREGISTREZ VOTRE NOUVEAU MOT DE PASSE</h1>
+        <p class="lead"><?php echo $msg; ?></p>
+    </div>
+    <div class="col-12">
+        <form method="post">
+            <div class="row">
+                <div class="offset-3 offset-sm-4 col-sm-4 col-6">
+                    <div class="form-group">
+                        <label for="mdp">Mot de passe</label>
+                        <input type="password" name="mdp" id="mdp" class="form-control">
                     </div>
-                </form>
+                    <div class="form-group">
+                        <label for="confirm_mdp">Confirmation du mot de passe</label>
+                        <input type="password" name="confirm_mdp" id="confirm_mdp" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-info w-100">Réinitialiser mon mot de passe</button>
+                    </div>
+                </div>                
             </div>
-        </main><!-- /.container -->
-    </body>
-</html>
+        </form>
+    </div>
+</main>
 
 <?php
 include 'inc/footer.inc.php';

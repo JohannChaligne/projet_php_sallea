@@ -8,57 +8,57 @@ if(isset($_GET['action']) && $_GET['action'] == 'vider'){
 }
 // Payer le panier
 if(isset($_GET['action']) && $_GET['action'] == 'payer' && !empty($_SESSION['panier']['titre'])){
-// enregistrement de la commande dans la table commande
-$nb_produit = sizeof($_SESSION['panier']['titre']);
-for($i = 0; $i < $nb_produit ; $i++){
-$commande = $pdo->prepare("INSERT INTO commande (id_membre, id_produit, date_enregistrement) VALUE (:id_membre, :id_produit, NOW())");
-$commande->bindParam(':id_membre', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
-$commande->bindParam(':id_produit', $_SESSION['panier']['id_produit'][$i], PDO::PARAM_STR);
-$commande->execute();
-
-}
-$id_commande = $pdo->lastInsertId();
-$etat = 'reservation';
-
-
-$email = $_SESSION['membre']['email'];
-$sujet_mail = "Confirmation de votre commande chez SalleA";
-$headers = "From: contact@sallea.fr \n";
-$headers .= "Reply-to: contact@sallea.fr \n";
-$headers .= 'Content-type: text/html; charset="UTF-8"';
-$message_mail = '<div class="row">';
-$message_mail .= '<div class="offset-1 col-5">';
-$message_mail .= '<p>Entreprise SalleA</p>';
-$message_mail .= '<p>Adresse</p>';
-$message_mail .= '<p>Code Postal + Ville</p>';
-$message_mail .= '<p>N° SIRET</p>';
-$message_mail .= '</div>';
-$message_mail .= '<div class="col-6">';
-$message_mail .= '<p>Bonjour '.$_SESSION['membre']['nom'].' '.$_SESSION['membre']['prenom'].',';
-$message_mail .= '<p>Nous vous remercions de votre achat et nous vous confirmons votre commande n° '.$id_commande.'.</p>';
-$message_mail .= '<p>Un récapitulatif de votre commande sera accessible via votre profil dans "Vos commandes réalisée".</p>';
-$message_mail .= '<br>';
-$message_mail .= '<br>';
-$message_mail .= '<br>';
-$message_mail .= '<p>L\'équipe SalleA.</p>';
-$message_mail .= '</div>';
-$message_mail .= '</div>';
-mail($email, $sujet_mail, $message_mail, $headers);
-
-if(!empty($id_commande)){
+    // enregistrement de la commande dans la table commande
+    $nb_produit = sizeof($_SESSION['panier']['titre']);
     for($i = 0; $i < $nb_produit ; $i++){
-    $maj_etat_produit = $pdo->prepare("UPDATE produit SET etat = :etat WHERE id_produit = :id_produit");
-    $maj_etat_produit->bindParam(':id_produit', $_SESSION['panier']['id_produit'][$i], PDO::PARAM_STR);
-    $maj_etat_produit->bindParam(':etat', $etat, PDO::PARAM_STR);
-    $maj_etat_produit->execute();
+        $commande = $pdo->prepare("INSERT INTO commande (id_membre, id_produit, date_enregistrement) VALUE (:id_membre, :id_produit, NOW())");
+        $commande->bindParam(':id_membre', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
+        $commande->bindParam(':id_produit', $_SESSION['panier']['id_produit'][$i], PDO::PARAM_STR);
+        $commande->execute();
     }
+
+    $id_commande = $pdo->lastInsertId();
+    $etat = 'reservation';
+
+    // Envoi de la confirmation de la commande par mail
+    $email = $_SESSION['membre']['email'];
+    $sujet_mail = "Confirmation de votre commande chez SalleA";
+    $headers = "From: postmaster@johann-chaligne.fr\n";
+    $headers .= "Reply-To: postmaster@johann-chaligne.fr\n";
+    $headers .= 'Content-Type: text/html; charset="UTF-8"';
+    $message_mail = '<div class="row">';
+    $message_mail .= '<div class="offset-1 col-5">';
+    $message_mail .= "<p>Entreprise SalleA</p>";
+    $message_mail .= "<p>Adresse : 37 rue Saint-Sébastien</p>";
+    $message_mail .= '<p>Code Postal - Ville : 75011 Paris</p>';
+    $message_mail .= '<p>N° SIRET : 456 456 546 645 RCS PARIS</p>';
+    $message_mail .= '</div>';
+    $message_mail .= '<div class="col-6">';
+    $message_mail .= '<p>Bonjour '.$_SESSION['membre']['nom'].' '.$_SESSION['membre']['prenom'].',';
+    $message_mail .= '<p>Nous vous remercions de votre achat et nous vous confirmons votre commande n° '.$id_commande.'.</p>';
+    $message_mail .= '<p>Un récapitulatif de votre commande sera accessible via votre profil dans "Vos commandes réalisée".</p>';
+    $message_mail .= '<br>';
+    $message_mail .= '<br>';
+    $message_mail .= '<br>';
+    $message_mail .= '<p>L\'équipe SalleA.</p>';
+    $message_mail .= '</div>';
+    $message_mail .= '</div>';
+    mail($email, $sujet_mail, $message_mail, $headers);
+
+    // Changement de l'état de la table produit
+    if(!empty($id_commande)){
+        for($i = 0; $i < $nb_produit ; $i++){
+        $maj_etat_produit = $pdo->prepare("UPDATE produit SET etat = :etat WHERE id_produit = :id_produit");
+        $maj_etat_produit->bindParam(':id_produit', $_SESSION['panier']['id_produit'][$i], PDO::PARAM_STR);
+        $maj_etat_produit->bindParam(':etat', $etat, PDO::PARAM_STR);
+        $maj_etat_produit->execute();
+        }
+    }
+
+    unset($_SESSION['panier']);
+    $msg .= '<div class="container pt-2 mt-4"><div class="row text-center"><div class="col-6 offset-3 alert alert own-alert">Commande enregistrée ! Son numéro est le '.$id_commande.'. Vous allez recevoir un mail de confirmation de votre commande.<br> Merci de nous avoir fait confiance.<br> Vos produits arrivent bientôt <i class="far fa-smile"></i></div></div></div>';
 }
 
-
-unset($_SESSION['panier']);
-$msg .= '<div class="container pt-2 mt-4"><div class="row text-center"><div class="col-6 offset-3 alert alert own-alert">Commande enregistrée ! Son numéro est le '.$id_commande.'. Merci de nous avoir fait confiance.<br> Vos produits arrivent bientôt <i class="far fa-smile"></i></div></div></div>';
-}
-// CODE
 //// Création panier
 creation_panier();
 
@@ -72,7 +72,6 @@ if(!empty($_POST['id_produit']) && is_numeric($_POST['id_produit'])){
 
     if($infos_salle_produit->rowCount() > 0){
         $salle_produit = $infos_salle_produit->fetch(PDO::FETCH_ASSOC);
-
         $_SESSION['panier']['id_produit'][] = strip_tags($_POST['id_produit']);
         $_SESSION['panier']['date_arrivee'][] = $salle_produit['date_arrivee'];
         $_SESSION['panier']['date_depart'][] = $salle_produit['date_depart'];
@@ -88,30 +87,30 @@ include 'inc/header.inc.php';
 include 'inc/nav.inc.php';
 ?>
 
-<main role="main" class="container">
+<main class="container">
 
-  <div class="starter-template text-center marge_haute">
-    <h1>Panier</h1>
-    <p class="lead"><?php echo $msg; ?></p>
-  </div>
-  <div class='row'>
-    <div class="col-12">
-        <?php
-        if(!empty($_SESSION['panier']['titre'])){
-            echo '<a href="?action=vider" class="btn btn-danger">Vider le panier</a><hr>';
-        }
-        ?>
-        <table class="table table-bordered border border-warning">
-            <thead class="thead-dark">
-                <tr>
-                    <th>N°Produit</th>
-                    <th>Titre</th>
-                    <th>Date arrivée</th>
-                    <th>Date départ</th>
-                    <th>Prix TTC</th>
-                </tr>
-            </thead>
-            <tbody>
+    <div class="starter-template text-center marge_haute">
+        <h1>Panier</h1>
+        <p class="lead"><?php echo $msg; ?></p>
+    </div>
+    <div class='row'>
+        <div class="col-12">
+            <?php
+            if(!empty($_SESSION['panier']['titre'])){
+                echo '<a href="?action=vider" class="btn btn-danger">Vider le panier</a><hr>';
+            }
+            ?>
+            <table class="table table-bordered border border-warning">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>N°Produit</th>
+                        <th>Titre</th>
+                        <th>Date arrivée</th>
+                        <th>Date départ</th>
+                        <th>Prix TTC</th>
+                    </tr>
+                </thead>
+                <tbody>
                 <?php 
                     if(!empty($_SESSION['panier']['id_produit'])){
                         //si le panier est rempli
@@ -134,7 +133,7 @@ include 'inc/nav.inc.php';
                             echo '<a href="?action=payer" class=" w-100 btn btn-insc">Payer</a>';
                         }else{
                             echo '<div class="text-center"><a href="connexion.php" class="mr-2 btn btn-warning">Se connecter</a>';
-                            echo '<a href="inscription.php" class=" btn btn-outline-warning">S\'inscrire</a></div>';
+                            echo '<a href="inscription.php" class=" btn btn-warning">S\'inscrire</a></div>';
                         }
                         echo '</td><td colspan="2">';
                         echo '<div><b>Montant total TTC :</b><span class="float-right">'.$montant_total.' €</span></div>';
@@ -144,12 +143,11 @@ include 'inc/nav.inc.php';
                         echo '<tr><td colspan="4">Votre panier est vide</td></tr>';
                     }
                 ?>
-            </tbody>    
-        </table>
+                </tbody>    
+            </table>
+        </div>
     </div>
-</div>
-
-</main><!-- /.container -->
+</main>
 
 
 <?php

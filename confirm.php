@@ -17,16 +17,9 @@ if(isset($membre) && $membre['confirmation_mail'] == $confirmation_mail){
     $maj_valid_mail->bindParam(':id_membre', $id_membre, PDO::PARAM_STR);
     $maj_valid_mail->execute();
     header('location: connexion.php');
-}
-else {
+} else {
     $msg .= '<div class="alert alert-danger"> ATTENTION,<br> Le lien de validation n\'est pas correct ou valide. Merci de cliquer sur le lien envoyé dans votre boite mail pour activer votre compte.</div>';
 }
-
-
-
-
-
-
 
 include 'inc/header.inc.php';
 include 'inc/nav.inc.php';
@@ -34,12 +27,12 @@ include 'inc/nav.inc.php';
 
 <main role="main" class="container">
 
-  <div class="starter-template text-center marge_haute">
-    <h1>Confirmation de votre mail</h1>
-    <p class="lead"><?php echo $msg; ?></p>
-  </div>
+    <div class="starter-template text-center marge_haute">
+      <h1>Confirmation de votre mail</h1>
+      <p class="lead"><?php echo $msg; ?></p>
+    </div>
 
-</main><!-- /.container -->
+</main>
 
 
 <?php

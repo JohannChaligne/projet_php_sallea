@@ -5,23 +5,23 @@ include 'inc/header.inc.php';
 include 'inc/nav.inc.php';
 ?>
 <div class="accueil" id="fond_accueil">
-<main role="main" class="container">
-
-  <div class="starter-template text-center marge_haute">
-    <h1 id="titre_accueil">Votre salle de réunion, de formation et de conférences</h1>
-    <p class="para_description" >Découvrez toutes nos salles pour chacun de vos évènements d'entreprises.</p>
-    <a href="location_salle.php" class="btn btn-info">Réserver votre salle</a>
-  </div>
-</main><!-- /.container -->
+    <main class="container">
+        <div class="starter-template text-center marge_haute">
+            <h1 id="titre_accueil">Votre salle de réunion, de formation et de conférences</h1>
+            <p class="para_description" >Découvrez toutes nos salles pour chacun de vos évènements d'entreprises.</p>
+            <a href="location_salle.php" class="btn btn-info">Réserver votre salle</a>
+        </div>
+    </main>
 </div>
 
-<div class="row bg-index">
+    <div class="row bg-index">
         <div class="col-12 text-center mt-3">
             <h2>Top 3 des salles les plus populaires</h2>
         </div>
     </div>
     <div class="row bg-index justify-content-center mb-3">
     <?php 
+    // Affichage des salles les plus populaires 
    $liste_salles_pop = $pdo->prepare("SELECT DISTINCT *, date_format(date_arrivee, '%d/%m/%Y') AS date_arrivee, date_format(date_depart, '%d/%m/%Y') AS date_depart FROM salle, produit, avis WHERE date_arrivee > now() AND salle.id_salle = produit.id_salle AND salle.id_salle = avis.id_salle GROUP BY salle.id_salle ORDER BY note DESC LIMIT 3");
    $liste_salles_pop->execute();
     while($salle_pop = $liste_salles_pop->fetch(PDO::FETCH_ASSOC)) {
@@ -44,13 +44,12 @@ include 'inc/nav.inc.php';
               <p class="card-text">' . iconv_substr($salle_pop['description'], 0, 60) . '...</p>
               <p class="card-text"><i class="fas fa-calendar-week"></i> ' . $salle_pop['date_arrivee'] . ' au ' . $salle_pop['date_depart'] . '</p>
               <div class="row">
-                  <a class="btn btn-info col-12" href="fiche_produit.php?id_produit=' . $salle_pop['id_produit'] . '" class="btn btn-info"><i class="fas fa-search"></i> Voir le produit</a>
+                  <a class="btn btn-info col-12" href="fiche_produit.php?id_produit=' . $salle_pop['id_produit'] . '"><i class="fas fa-search"></i> Voir le produit</a>
               </div>
           </div>
           </div>';
         echo '</div>';
-    } ?>
-    </div>	
+    } ?>	
 </div>
 <?php
 include 'inc/footer.inc.php';

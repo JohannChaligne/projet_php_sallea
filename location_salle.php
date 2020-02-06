@@ -25,7 +25,7 @@ if(
         $date_depart = strip_tags(trim($_POST['date_depart']));
     }
 
-// récupération des articles en BDD
+// Création du Multi-filtre
 $where = '';
 $args = array();
 if(!empty($categorie)) {
@@ -85,136 +85,134 @@ include 'inc/header.inc.php';
 include 'inc/nav.inc.php';
 ?>
 
-<main role="main" class="container main_bg">
+<main class="container main_bg">
 
-  <div class="starter-template text-center marge_haute">
-    <h1>Location de salle</h1>
-  </div>
-  <div class="row">
-  	<div class="col-3">
-          <form method="post" action="location_salle.php">
-            <div class="form-group">
-                <a href="location_salle.php" class="reset_filtre" style="text-decoration: underline;">Effacer les critères sélectionnés</a>
-            </div>
-            <?php
-            // FILTRE PAR CATEGORIE
-            $categorie_salle = $pdo->query("SELECT DISTINCT categorie FROM salle ORDER BY categorie");
-            echo '<div class="form-group">';
-            echo '<label for="categorie">Catégorie</label>';
-            echo '<select name="categorie" id="categorie" class="form-control">';
-            echo '<option></option>';
-            while ($liste_categorie = $categorie_salle->fetch(PDO::FETCH_ASSOC)){
-                echo '<option';
-                if ($categorie == $liste_categorie['categorie']) { echo ' selected '; }
-                    echo ' value="' . $liste_categorie['categorie'] . '">' . ucfirst($liste_categorie['categorie']) . '</option>';
-            }  		
-            echo '</select>';
-            echo '</div>';
-
-
-            // FILTRE PAR VILLE
-            $ville_salle = $pdo->query("SELECT DISTINCT ville FROM salle ORDER BY ville"); 
-            echo '<div class="form-group">';
-            echo '<label for="ville">Ville</label>';
-            echo '<select name="ville" id="ville" class="form-control">';
-            echo '<option></option>';
-            while ($liste_ville = $ville_salle->fetch(PDO::FETCH_ASSOC)){
-                echo '<option';
-                if ($ville == $liste_ville['ville']) { echo ' selected '; }
-                    echo ' value="' . $liste_ville['ville'] . '">' . ucfirst($liste_ville['ville']) . '</option>';
-            }  		
-            echo '</select>';
-            echo '</div>';
+    <div class="starter-template text-center marge_haute">
+        <h1>Location de salle</h1>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <form method="post" action="location_salle.php">
+                <div class="form-group">
+                    <a href="location_salle.php" class="reset_filtre" style="text-decoration: underline;">Effacer les critères sélectionnés</a>
+                </div>
+                <?php
+                // FILTRE PAR CATEGORIE
+                $categorie_salle = $pdo->query("SELECT DISTINCT categorie FROM salle ORDER BY categorie");
+                echo '<div class="form-group">';
+                echo '<label for="categorie">Catégorie</label>';
+                echo '<select name="categorie" id="categorie" class="form-control">';
+                echo '<option></option>';
+                while ($liste_categorie = $categorie_salle->fetch(PDO::FETCH_ASSOC)){
+                    echo '<option';
+                    if ($categorie == $liste_categorie['categorie']) { echo ' selected '; }
+                        echo ' value="' . $liste_categorie['categorie'] . '">' . ucfirst($liste_categorie['categorie']) . '</option>';
+                }  		
+                echo '</select>';
+                echo '</div>';
 
 
-            // FILTRE PAR CAPACITE
-            $capacite_salle = $pdo->query("SELECT DISTINCT capacite FROM salle ORDER BY capacite"); 
-            echo '<div class="form-group">';
-            echo '<label for="capacite">Capacite</label>';
-            echo '<select name="capacite" id="capacite" class="form-control">';
-            echo '<option></option>';
-            while($liste_capacite = $capacite_salle->fetch(PDO::FETCH_ASSOC)){
-                echo '<option';
-                if ($capacite == $liste_capacite['capacite']) { echo ' selected '; }
-                    echo ' value="' . $liste_capacite['capacite'] . '">' . ucfirst($liste_capacite['capacite']) . '</option>';
-            }  		
-            echo '</select>';
-            echo '</div>';
-            ?>
-
-            <!-- FILTRE PAR PRIX -->
-            <div class="form-group">
-            <label for="prix">Prix maximum (en €)</label>
-            <input type="text" class="form-control" name="prix" id="prix" value="<?php echo $prix; ?>">
-            </div>
+                // FILTRE PAR VILLE
+                $ville_salle = $pdo->query("SELECT DISTINCT ville FROM salle ORDER BY ville"); 
+                echo '<div class="form-group">';
+                echo '<label for="ville">Ville</label>';
+                echo '<select name="ville" id="ville" class="form-control">';
+                echo '<option></option>';
+                while ($liste_ville = $ville_salle->fetch(PDO::FETCH_ASSOC)){
+                    echo '<option';
+                    if ($ville == $liste_ville['ville']) { echo ' selected '; }
+                        echo ' value="' . $liste_ville['ville'] . '">' . ucfirst($liste_ville['ville']) . '</option>';
+                }  		
+                echo '</select>';
+                echo '</div>';
 
 
-            <!-- FILTRE PAR DATE D'ARRIVEE -->
-            <div class="form-group">
-            <label for="date_arrivee">Date d'arrivée</label>
-            <input type="text" class="datepick form-control" name="date_arrivee" id="date_arrivee" value="<?php echo $date_arrivee; ?>"> 		
-            </select>
-            </div>
+                // FILTRE PAR CAPACITE
+                $capacite_salle = $pdo->query("SELECT DISTINCT capacite FROM salle ORDER BY capacite"); 
+                echo '<div class="form-group">';
+                echo '<label for="capacite">Capacite</label>';
+                echo '<select name="capacite" id="capacite" class="form-control">';
+                echo '<option></option>';
+                while($liste_capacite = $capacite_salle->fetch(PDO::FETCH_ASSOC)){
+                    echo '<option';
+                    if ($capacite == $liste_capacite['capacite']) { echo ' selected '; }
+                        echo ' value="' . $liste_capacite['capacite'] . '">' . ucfirst($liste_capacite['capacite']) . '</option>';
+                }  		
+                echo '</select>';
+                echo '</div>';
+                ?>
 
-            <!-- FILTRE PAR DATE D'ARRIVEE -->
-            <div class="form-group">
-            <label for="date_depart">Date de départ</label>
-            <input type="text" class="datepick form-control" name="date_depart" id="date_depart" value="<?php echo $date_depart; ?>">		
-            </select>
-            </div>
+                <!-- FILTRE PAR PRIX -->
+                <div class="form-group">
+                    <label for="prix">Prix maximum (en €)</label>
+                    <input type="text" class="form-control" name="prix" id="prix" value="<?php echo $prix; ?>">
+                </div>
+
+
+                <!-- FILTRE PAR DATE D'ARRIVEE -->
+                <div class="form-group">
+                    <label for="date_arrivee">Date d'arrivée</label>
+                    <input type="text" class="datepick form-control" name="date_arrivee" id="date_arrivee" value="<?php echo $date_arrivee; ?>"> 
+                </div>
+
+                <!-- FILTRE PAR DATE DE DEPART -->
+                <div class="form-group">
+                    <label for="date_depart">Date de départ</label>
+                    <input type="text" class="datepick form-control" name="date_depart" id="date_depart" value="<?php echo $date_depart; ?>">	
+                </div>
             
-            <div class="form-group">
-                <button type="submit" name='submit_filtre' class="btn btn-info w-100 mt-2">Valider</button>
-			</div>
+                <div class="form-group">
+                    <button type="submit" name='submit_filtre' class="btn btn-info w-100 mt-2">Valider</button>
+			    </div>
             </form> 
-  	</div>
-  	  <div class="col-9">
-  		<div class="row">
-  			<?php
-  			while($salle = $liste_salles->fetch(PDO::FETCH_ASSOC)) {
-                  $avis = $pdo->prepare("SELECT *, (sum(note)/count(note)) AS moyenne FROM avis, salle WHERE salle.id_salle = avis.id_salle AND avis.id_salle = :id_salle");
-                  $avis->bindParam(':id_salle', $salle['id_salle'], PDO::PARAM_STR);
-                  $avis->execute();
+  	    </div>
+        <div class="col-9">
+            <div class="row">
+                <?php
+                while($salle = $liste_salles->fetch(PDO::FETCH_ASSOC)) {
+                    $avis = $pdo->prepare("SELECT *, (sum(note)/count(note)) AS moyenne FROM avis, salle WHERE salle.id_salle = avis.id_salle AND avis.id_salle = :id_salle");
+                    $avis->bindParam(':id_salle', $salle['id_salle'], PDO::PARAM_STR);
+                    $avis->execute();
 
-                  $liste_avis = $avis->fetch(PDO::FETCH_ASSOC);
+                    $liste_avis = $avis->fetch(PDO::FETCH_ASSOC);
 
-  				echo '<div class="col-4">';
-  				echo '<div class="card mt-3">
-                        <img src="' . URL . $salle['photo'] . '" class="card-img-top p-2" alt="' . $salle['titre'] . '">
-                        <div class="card-body">
-                        <div class="row">
-                            <h5 class="card-title col-8">Salle ' . ucfirst($salle['titre']) . '</h5>
-                            <p class="card-text col-4"><span class="badge-info badge_price">' . $salle['prix'] . ' €</span></p>
+                    echo '<div class="col-4">';
+                    echo '<div class="card mt-3">
+                            <img src="' . URL . $salle['photo'] . '" class="card-img-top p-2" alt="' . $salle['titre'] . '">
+                            <div class="card-body">
+                            <div class="row">
+                                <h5 class="card-title col-8">Salle ' . ucfirst($salle['titre']) . '</h5>
+                                <p class="card-text col-4"><span class="badge-info badge_price">' . $salle['prix'] . ' €</span></p>
+                            </div>
+                            <p class="card-text"><span class="couleur-star">' . afficheretoile(round($liste_avis['moyenne'], 2)) . '</span> <span class="taille-mini">' . round($liste_avis['moyenne'], 2) . '/5 étoiles</span></p>
+                            <p class="card-text">Lieu : ' . ucfirst($salle['ville']) . '</p>
+                            <p class="card-text">' . iconv_substr($salle['description'], 0, 55) . '...</p>
+                            <p class="card-text"><i class="fas fa-calendar-week"></i> ' . $salle['date_arrivee'] . ' au ' . $salle['date_depart'] . '</p>
+                            <div class="row">
+                                <a class="btn btn-info col-12" href="fiche_produit.php?id_produit=' . $salle['id_produit'] . '"><i class="fas fa-search"></i> Voir le produit</a>
+                            </div>
                         </div>
-                        <p class="card-text"><span class="couleur-star">' . afficheretoile(round($liste_avis['moyenne'], 2)) . '</span> <span class="taille-mini">' . round($liste_avis['moyenne'], 2) . '/5 étoiles</span></p>
-                        <p class="card-text">Lieu : ' . ucfirst($salle['ville']) . '</p>
-                        <p class="card-text">' . iconv_substr($salle['description'], 0, 60) . '...</p>
-                        <p class="card-text"><i class="fas fa-calendar-week"></i> ' . $salle['date_arrivee'] . ' au ' . $salle['date_depart'] . '</p>
-                        <div class="row">
-                            <a class="btn btn-info col-12" href="fiche_produit.php?id_produit=' . $salle['id_produit'] . '" class="btn btn-info"><i class="fas fa-search"></i> Voir le produit</a>
-                        </div>
-					</div>
-					</div>';
-  				echo '</div>';
-              } ?>	
-  		</div>
-  	</div>
-      <div class="offset-6">
-  		<div class="row">
-  			<?php
-      echo '<ul class="pagination justify-content-center mt-2">';
-      for($i=1; $i<=$pages_totales; $i++){
-          if($i == $page_courante){
-              echo '<li class="page-item active"><span class="page-link">' . $i . '</span></li>';
-          } else {
-              echo '<li class="page-item"><a class="page-link" href="location_salle.php?page=' . $i . '">' . $i . '</a></li>';
-          }
-      }
-      echo '</ul>'; ?>	
-  		</div>
-  	</div>
-
-</main><!-- /.container -->
+                        </div>';
+                    echo '</div>';
+                } ?>	
+            </div>
+        </div>
+        <div class="offset-6">
+            <div class="row">
+                <?php
+        echo '<ul class="pagination justify-content-center mt-2">';
+        for($i=1; $i<=$pages_totales; $i++){
+            if($i == $page_courante){
+                echo '<li class="page-item active"><span class="page-link">' . $i . '</span></li>';
+            } else {
+                echo '<li class="page-item"><a class="page-link" href="location_salle.php?page=' . $i . '">' . $i . '</a></li>';
+            }
+        }
+        echo '</ul>'; ?>	
+            </div>
+        </div>
+    </div>
+</main>
 
 
 <?php
