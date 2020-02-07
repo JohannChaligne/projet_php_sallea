@@ -57,12 +57,12 @@ include 'inc/nav_admin.inc.php';
     // une boucle pour afficher les salles dans le tableau
     while($ligne = $commande_produit_membre->fetch(PDO::FETCH_ASSOC)){
       echo '<tr>';
-          echo '<td>' . $ligne['id_commande'] . '</td>';
-          echo '<td>' . $ligne['id_membre'] . ' - ' . $ligne['email']. '</td>';
-          echo '<td>' . $ligne['id_salle'] . ' - Salle ' . $ligne['titre'] . ' : ' . $ligne['date_arrivee'] . ' au ' . $ligne['date_depart'] . '</td>';
-          echo '<td>' . $ligne['prix'] . '</td>';
-          echo '<td>' . $ligne['date_enregistrement'] . '</td>';
-      echo '<td><a href="?action=supprimer&id_commande=' . $ligne['id_commande'] . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
+          echo '<td>' . htmlentities($ligne['id_commande']) . '</td>';
+          echo '<td>' . htmlentities($ligne['id_membre']) . ' - ' . htmlentities($ligne['email']) . '</td>';
+          echo '<td>' . htmlentities($ligne['id_salle']) . ' - Salle ' . htmlentities($ligne['titre']) . ' : ' . htmlentities($ligne['date_arrivee']) . ' au ' . htmlentities($ligne['date_depart']) . '</td>';
+          echo '<td>' . htmlentities($ligne['prix']) . '</td>';
+          echo '<td>' . htmlentities($ligne['date_enregistrement']) . '</td>';
+      echo '<td><a href="?action=supprimer&id_commande=' . htmlentities($ligne['id_commande']) . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
 
       echo '</tr>';
     }

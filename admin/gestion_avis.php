@@ -60,13 +60,13 @@ if(
     isset($_POST['note'])) {
       
         if(!empty($_POST['id_avis'])){
-            $id_avis = strip_tags(trim($_POST['id_avis']));
+            $id_avis = htmlentities(trim($_POST['id_avis']));
         }
 
         $membre = explode(' -', $_POST['membre']);
         $salle = explode(' -', $_POST['salle']);
-        $commentaire = strip_tags(trim($_POST['commentaire']));
-        $note = strip_tags(trim($_POST['note']));
+        $commentaire = htmlentities(trim($_POST['commentaire']));
+        $note = htmlentities(trim($_POST['note']));
 
         // Vérificiation de Note pour qu'il ne soit pas vide
         if(empty($note)){
@@ -185,13 +185,13 @@ include 'inc/nav_admin.inc.php';
     // une boucle pour afficher les salles dans le tableau
     while($ligne = $recup_tab_salle_et_membre->fetch(PDO::FETCH_ASSOC)){
         echo '<tr>';
-        echo '<td>' . $ligne['id_avis'] . '</td>';
-        echo '<td>' . $ligne['id_membre'] . ' - ' . $ligne['email'] . '</td>';
-        echo '<td>' . $ligne['id_salle'] . ' - ' . $ligne['titre'] . '</td>';
-        echo '<td>' . $ligne['commentaire'] . '</td>';
-        echo '<td>' . $ligne['note'] . '</td>';
-        echo '<td>' . $ligne['date_enregistrement_avis'] . '</td>';
-        echo '<td><a href="?action=modifier&id_avis=' . $ligne['id_avis'] . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_avis=' . $ligne['id_avis'] . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
+        echo '<td>' . htmlentities($ligne['id_avis']) . '</td>';
+        echo '<td>' . htmlentities($ligne['id_membre']) . ' - ' . htmlentities($ligne['email']) . '</td>';
+        echo '<td>' . htmlentities($ligne['id_salle']) . ' - ' . htmlentities($ligne['titre']) . '</td>';
+        echo '<td>' . htmlentities($ligne['commentaire']) . '</td>';
+        echo '<td>' . htmlentities($ligne['note']) . '</td>';
+        echo '<td>' . htmlentities($ligne['date_enregistrement_avis'] . '</td>';
+        echo '<td><a href="?action=modifier&id_avis=' . htmlentities($ligne['id_avis']) . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_avis=' . htmlentities($ligne['id_avis']) . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
 
         echo '</tr>';
     }

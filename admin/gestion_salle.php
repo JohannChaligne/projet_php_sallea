@@ -82,23 +82,23 @@ if(
 
 	// récupération de l'id_salle dans le cadre de la modification
 	if(!empty($_POST['id_salle'])){
-		$id_salle = strip_tags(trim($_POST['id_salle']));
+		$id_salle = htmlentities(trim($_POST['id_salle']));
 	}
 
 	//Récupération de la photo actuelle dans le cadre de la modif
 	if(!empty($_POST['photo_actuelle'])){
-		$photo = strip_tags(trim($_POST['photo_actuelle']));
+		$photo = htmlentities(trim($_POST['photo_actuelle']));
     }
     
-	$titre = strip_tags(trim($_POST['titre']));
-	$description = strip_tags(trim($_POST['description']));
-	$pays = strip_tags(trim($_POST['pays']));
-	$ville = strip_tags(trim($_POST['ville']));
-	$adresse = strip_tags(trim($_POST['adresse']));
-	$cp = strip_tags(trim($_POST['cp']));
-	$capacite = strip_tags(trim($_POST['capacite']));
-	$categorie = strip_tags(trim($_POST['categorie']));
-	$localisation = strip_tags(trim($_POST['localisation']));
+	$titre = htmlentities(trim($_POST['titre']));
+	$description = htmlentities(trim($_POST['description']));
+	$pays = htmlentities(trim($_POST['pays']));
+	$ville = htmlentities(trim($_POST['ville']));
+	$adresse = htmlentities(trim($_POST['adresse']));
+	$cp = htmlentities(trim($_POST['cp']));
+	$capacite = htmlentities(trim($_POST['capacite']));
+	$categorie = htmlentities(trim($_POST['categorie']));
+	$localisation = htmlentities(trim($_POST['localisation']));
 
     // Conditions pour que le titre, l'adresse et la localisation soient complétés obligatoirement
     if(empty($titre)){
@@ -280,18 +280,18 @@ include 'inc/nav_admin.inc.php';
 		// une boucle pour afficher les salles dans le tableau
 		while($ligne = $liste_salle->fetch(PDO::FETCH_ASSOC)){
 			echo '<tr>';
-			echo '<td>' . $ligne['id_salle'] . '</td>';
-			echo '<td>' . $ligne['titre'] . '</td>';
-			echo '<td>' . iconv_substr($ligne['description'], 0 , 25) . '...</td>';
-			echo '<td><img src="' . URL . $ligne['photo'] . '" class="img-thumbnail" width="100"></td>'; 
-			echo '<td>' . $ligne['pays'] . '</td>';
-			echo '<td>' . $ligne['ville'] . '</td>';
-			echo '<td>' . $ligne['adresse'] . '</td>';
-			echo '<td>' . $ligne['cp'] . '</td>';
-			echo '<td>' . $ligne['capacite'] . '</td>';
-			echo '<td>' . $ligne['categorie'] . '</td>';
-			echo '<td>' . iconv_substr($ligne['localisation'], 0 , 5) . '...</td>';
-			echo '<td><a href="?action=modifier&id_salle=' . $ligne['id_salle'] . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_salle=' . $ligne['id_salle'] . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
+			echo '<td>' . htmlentities($ligne['id_salle']) . '</td>';
+			echo '<td>' . htmlentities($ligne['titre']) . '</td>';
+			echo '<td>' . htmlentities(iconv_substr($ligne['description'], 0 , 25)) . '...</td>';
+			echo '<td><img src="' . URL . htmlentities($ligne['photo']) . '" class="img-thumbnail" width="100"></td>'; 
+			echo '<td>' . htmlentities($ligne['pays']) . '</td>';
+			echo '<td>' . htmlentities($ligne['ville']) . '</td>';
+			echo '<td>' . htmlentities($ligne['adresse']) . '</td>';
+			echo '<td>' . htmlentities($ligne['cp']) . '</td>';
+			echo '<td>' . htmlentities($ligne['capacite']) . '</td>';
+			echo '<td>' . htmlentities($ligne['categorie']) . '</td>';
+			echo '<td>' . htmlentities(iconv_substr($ligne['localisation'], 0 , 5)) . '...</td>';
+			echo '<td><a href="?action=modifier&id_salle=' . htmlentities($ligne['id_salle']) . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_salle=' . htmlentities($ligne['id_salle']) . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
 
 			echo '</tr>';
 		}

@@ -24,13 +24,13 @@ if(
     isset($_POST['prenom']) &&
     isset($_POST['civilite'])) {
       
-        $pseudo = strip_tags(trim($_POST['pseudo']));
-        $mdp = strip_tags(trim($_POST['mdp']));
-        $confirm_mdp = strip_tags(trim($_POST['confirm_mdp']));
-        $email = strip_tags(trim($_POST['email']));
-        $nom = strip_tags(trim($_POST['nom']));
-        $prenom = strip_tags(trim($_POST['prenom']));
-        $civilite = strip_tags(trim($_POST['civilite'])); 
+        $pseudo = htmlentities(trim($_POST['pseudo']));
+        $mdp = htmlentities(trim($_POST['mdp']));
+        $confirm_mdp = htmlentities(trim($_POST['confirm_mdp']));
+        $email = htmlentities(trim($_POST['email']));
+        $nom = htmlentities(trim($_POST['nom']));
+        $prenom = htmlentities(trim($_POST['prenom']));
+        $civilite = striphtmlentities_tags(trim($_POST['civilite'])); 
         
         if(iconv_strlen($pseudo) < 4 || iconv_strlen($pseudo) > 20){
             $msg .= '<div class="alert alert-danger"> ATTENTION,<br> Le pseudo doit avoir entre 4 et 20 caractères</div>';

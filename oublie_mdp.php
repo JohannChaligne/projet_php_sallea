@@ -15,7 +15,7 @@ $email = '';
 
 
 if(isset($_POST['email'])) {
-    $email = strip_tags(trim($_POST['email']));
+    $email = htmlentities(trim($_POST['email']));
 
     // Vérification du mail dans la BDD
     $membre = $pdo->prepare("SELECT * FROM membre WHERE email = :email AND validation_compte IS NOT NULL");

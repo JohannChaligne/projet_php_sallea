@@ -73,19 +73,19 @@ if(
     isset($_POST['statut'])) {
         
         if(!empty($_POST['id_membre'])){
-            $id_membre = strip_tags(trim($_POST['id_membre']));
+            $id_membre = htmlentities(trim($_POST['id_membre']));
         }
         if(!empty($_POST['mdp_actuel'])){
-            $mdp = strip_tags(trim($_POST['mdp_actuel']));
+            $mdp = htmlentities(trim($_POST['mdp_actuel']));
         }
 
-        $pseudo = strip_tags(trim($_POST['pseudo']));
-        $mdp = strip_tags(trim($_POST['mdp']));
-        $email = strip_tags(trim($_POST['email']));
-        $nom = strip_tags(trim($_POST['nom']));
-        $prenom = strip_tags(trim($_POST['prenom']));
-        $civilite = strip_tags(trim($_POST['civilite']));
-        $statut = strip_tags(trim($_POST['statut'])); 
+        $pseudo = htmlentities(trim($_POST['pseudo']));
+        $mdp = htmlentities(trim($_POST['mdp']));
+        $email = htmlentities(trim($_POST['email']));
+        $nom = htmlentities(trim($_POST['nom']));
+        $prenom = htmlentities(trim($_POST['prenom']));
+        $civilite = htmlentities(trim($_POST['civilite']));
+        $statut = htmlentities(trim($_POST['statut'])); 
         
         // Vérification du nombre de caractères du pseudo
         if(iconv_strlen($pseudo) < 4 || iconv_strlen($pseudo) > 20){
@@ -284,15 +284,15 @@ include 'inc/nav_admin.inc.php';
         // une boucle pour afficher les salles dans le tableau
         while($ligne = $liste_membre->fetch(PDO::FETCH_ASSOC)){
             echo '<tr>';
-            echo '<td>' . $ligne['id_membre'] . '</td>';
-            echo '<td>' . $ligne['pseudo'] . '</td>';
-            echo '<td>' . $ligne['nom'] . '</td>';
-            echo '<td>' . $ligne['prenom'] . '</td>';
-            echo '<td>' . $ligne['email'] . '</td>';
-            echo '<td>' . $ligne['civilite'] . '</td>';
-            echo '<td>' . $ligne['statut'] . '</td>';
-            echo '<td>' . $ligne['date_enregistrement'] . '</td>';
-            echo '<td><a href="?action=modifier&id_membre=' . $ligne['id_membre'] . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_membre=' . $ligne['id_membre'] . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
+            echo '<td>' . htmlentities($ligne['id_membre']) . '</td>';
+            echo '<td>' . htmlentities($ligne['pseudo']) . '</td>';
+            echo '<td>' . htmlentities($ligne['nom']) . '</td>';
+            echo '<td>' . htmlentities($ligne['prenom']) . '</td>';
+            echo '<td>' . htmlentities($ligne['email']) . '</td>';
+            echo '<td>' . htmlentities($ligne['civilite']) . '</td>';
+            echo '<td>' . htmlentities($ligne['statut']) . '</td>';
+            echo '<td>' . htmlentities($ligne['date_enregistrement'] . '</td>';
+            echo '<td><a href="?action=modifier&id_membre=' . htmlentities($ligne['id_membre']) . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_membre=' . htmlentities($ligne['id_membre']) . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
 
             echo '</tr>';
         }

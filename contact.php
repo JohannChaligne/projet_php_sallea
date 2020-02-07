@@ -15,11 +15,11 @@ if(
     isset($_POST['sujet']) &&
     isset($_POST['message'])) {
     
-        $email = strip_tags(trim($_POST['email']));
-        $nom = strip_tags(trim($_POST['nom']));
-        $prenom = strip_tags(trim($_POST['prenom']));
-        $sujet = strip_tags(trim($_POST['sujet']));
-        $message = strip_tags(trim($_POST['message']));
+        $email = htmlentities(trim($_POST['email']));
+        $nom = htmlentities(trim($_POST['nom']));
+        $prenom = htmlentities(trim($_POST['prenom']));
+        $sujet = htmlentities(trim($_POST['sujet']));
+        $message = htmlentities(trim($_POST['message']));
 
         // Vérification de la validité de l'email
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {

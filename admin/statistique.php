@@ -54,7 +54,7 @@ include 'inc/nav_admin.inc.php';
                 $stat_note_salle = $pdo->query("SELECT *, (sum(note)/count(note)) AS nb_de_note FROM salle, avis WHERE salle.id_salle = avis.id_salle GROUP BY titre ORDER BY nb_de_note DESC LIMIT 5");
                 echo '<ul>';
                 while($ligne = $stat_note_salle->fetch(PDO::FETCH_ASSOC)){ 
-                    echo '<li class="list-group-item d-flex justify-content-between">Salle ' . ucfirst($ligne['titre']) . ' ' . $ligne['id_salle'] . '<span class="badge-dark badge-pill">' . round($ligne['nb_de_note'], 2) . '</span></li>';
+                    echo '<li class="list-group-item d-flex justify-content-between">Salle ' . htmlentities(ucfirst($ligne['titre'])) . ' ' . htmlentities($ligne['id_salle']) . '<span class="badge-dark badge-pill">' . htmlentities(round($ligne['nb_de_note'], 2)) . '</span></li>';
                     }
                 echo '</ul>';
                 }
@@ -64,7 +64,7 @@ include 'inc/nav_admin.inc.php';
                     $stat_commande_salle = $pdo->query("SELECT *, count(salle.id_salle) AS nb_commande_salle FROM commande, produit, salle WHERE commande.id_produit = produit.id_produit AND salle.id_salle = produit.id_salle GROUP BY titre ORDER BY nb_commande_salle DESC LIMIT 5");
                     echo '<ul>';
                     while($ligne = $stat_commande_salle->fetch(PDO::FETCH_ASSOC)){ 
-                        echo '<li class="list-group-item d-flex justify-content-between">Salle ' . ucfirst($ligne['titre']) . ' ' . $ligne['id_salle'] . '<span class="badge-dark badge-pill">' . ucfirst($ligne['nb_commande_salle']) . '</span></li>';
+                        echo '<li class="list-group-item d-flex justify-content-between">Salle ' . htmlentities(ucfirst($ligne['titre'])) . ' ' . htmlentities($ligne['id_salle']) . '<span class="badge-dark badge-pill">' . htmlentities(ucfirst($ligne['nb_commande_salle'])) . '</span></li>';
                         }
                     echo '</ul>';
                     }
@@ -74,7 +74,7 @@ include 'inc/nav_admin.inc.php';
                     $stat_commande_membre = $pdo->query("SELECT *, count(id_commande) AS nb_commande_membre FROM commande, membre WHERE commande.id_membre = membre.id_membre GROUP BY pseudo ORDER BY nb_commande_membre DESC LIMIT 5");
                     echo '<ul>';
                     while($ligne = $stat_commande_membre->fetch(PDO::FETCH_ASSOC)){ 
-                        echo '<li class="list-group-item d-flex justify-content-between">' . ucfirst($ligne['pseudo']) . '<span class="badge-dark badge-pill">' . ucfirst($ligne['nb_commande_membre']) . '</span></li>';
+                        echo '<li class="list-group-item d-flex justify-content-between">' . htmlentities(ucfirst($ligne['pseudo'])) . '<span class="badge-dark badge-pill">' . htmlentities(ucfirst($ligne['nb_commande_membre'])) . '</span></li>';
                         }
                     echo '</ul>';
                     }
@@ -84,7 +84,7 @@ include 'inc/nav_admin.inc.php';
                     $stat_prix_commande_membre = $pdo->query("SELECT *, sum(prix) AS nb_prix_commande_membre FROM commande, produit, membre WHERE commande.id_membre = membre.id_membre AND commande.id_produit = produit.id_produit GROUP BY prix ORDER BY nb_prix_commande_membre DESC LIMIT 5");
                     echo '<ul>';
                     while($ligne = $stat_prix_commande_membre->fetch(PDO::FETCH_ASSOC)){ 
-                        echo '<li class="list-group-item d-flex justify-content-between">' . ucfirst($ligne['pseudo']) . '<span class="badge-dark badge-pill">' . ucfirst($ligne['nb_prix_commande_membre']) . ' €</span></li>';
+                        echo '<li class="list-group-item d-flex justify-content-between">' . htmlentities(ucfirst($ligne['pseudo'])) . '<span class="badge-dark badge-pill">' . htmlentities(ucfirst($ligne['nb_prix_commande_membre'])) . ' €</span></li>';
                         }
                     echo '</ul>';
                     }
@@ -94,7 +94,7 @@ include 'inc/nav_admin.inc.php';
                     $stat_cumul_prix_commande_membre = $pdo->query("SELECT *, sum(prix) AS nb_prix_commande_membre FROM commande, produit, membre WHERE commande.id_membre = membre.id_membre AND commande.id_produit = produit.id_produit GROUP BY pseudo ORDER BY nb_prix_commande_membre DESC LIMIT 5");
                     echo '<ul>';
                     while($ligne = $stat_cumul_prix_commande_membre->fetch(PDO::FETCH_ASSOC)){ 
-                        echo '<li class="list-group-item d-flex justify-content-between">' . ucfirst($ligne['pseudo']) . '<span class="badge-dark badge-pill">' . ucfirst($ligne['nb_prix_commande_membre']) . ' €</span></li>';
+                        echo '<li class="list-group-item d-flex justify-content-between">' . htmlentities(ucfirst($ligne['pseudo'])) . '<span class="badge-dark badge-pill">' . htmlentities(ucfirst($ligne['nb_prix_commande_membre'])) . ' €</span></li>';
                         }
                     echo '</ul>';
                     }

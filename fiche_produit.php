@@ -31,13 +31,13 @@ include 'inc/nav.inc.php';
   <div class="starter-template marge_haute">
     <div class="row">
         <div class="col-8">
-            <h1>Salle <?php echo ucfirst($liste_salles_produit_avis['titre']) . ' <span class="couleur-star">' . afficheretoile(round($moyenne_avis['moyenne'], 2)) . '</span> <span class="taille-mini">' . round($moyenne_avis['moyenne'], 2) . '/5 étoiles</span>'; ?></h1>
+            <h1>Salle <?php echo htmlentities(ucfirst($liste_salles_produit_avis['titre'])) . ' <span class="couleur-star">' . htmlentities(afficheretoile(round($moyenne_avis['moyenne'], 2))) . '</span> <span class="taille-mini">' . htmlentities(round($moyenne_avis['moyenne'], 2)) . '/5 étoiles</span>'; ?></h1>
         </div>
         <div class="offset-2 col-2">
         <?php 
-			if($liste_salles_produit_avis['etat']== 'libre') {
+			if(htmlentities($liste_salles_produit_avis['etat'])== 'libre') {
                 echo '<form method="post" action="panier.php">';
-				echo '<input type="hidden" name="id_produit" value="' . $liste_salles_produit_avis['id_produit'] . '">';	
+				echo '<input type="hidden" name="id_produit" value="' . htmlentities($liste_salles_produit_avis['id_produit']) . '">';	
 				echo '<button type="submit" name="ajout_panier" class="btn btn-success w-100">Réserver</button>';
 				echo '</form>';
 					
@@ -49,12 +49,12 @@ include 'inc/nav.inc.php';
     </div>
     <div class="row">
         <div class="col-8">
-            <img src="<?php echo  URL . $liste_salles_produit_avis['photo']; ?>" class="w-75" alt="photo de la salle <?php $liste_salles_produit_avis['titre']; ?>">
+            <img src="<?php echo  URL . $liste_salles_produit_avis['photo']; ?>" class="w-75" alt="photo de la salle <?php htmlentities($liste_salles_produit_avis['titre']); ?>">
         </div>
         <div class="col-4">
             <ul class="list-group">
-                <li class="list-group-item">Description : <?php echo $liste_salles_produit_avis['description']; ?></li>
-                <li class="list-group-item">Localisation : <iframe class="style_iframe_localisation" src="<?php echo $liste_salles_produit_avis['localisation']; ?>"></iframe></li>  
+                <li class="list-group-item">Description : <?php echo htmlentities($liste_salles_produit_avis['description']); ?></li>
+                <li class="list-group-item">Localisation : <iframe class="style_iframe_localisation" src="<?php echo htmlentities($liste_salles_produit_avis['localisation']); ?>"></iframe></li>  
             </ul>
         </div>
     </div>
@@ -62,20 +62,20 @@ include 'inc/nav.inc.php';
     <div class="row">
         <div class="col-4">
             <ul class="list-group">
-                <li class="list-group-item"><i class="fas fa-calendar-week"></i> Arrivée : <?php echo $liste_salles_produit_avis['date_arrivee']; ?></li>
-                <li class="list-group-item"><i class="fas fa-calendar-week"></i> Départ : <?php echo $liste_salles_produit_avis['date_depart']; ?></li>
+                <li class="list-group-item"><i class="fas fa-calendar-week"></i> Arrivée : <?php echo htmlentities($liste_salles_produit_avis['date_arrivee']); ?></li>
+                <li class="list-group-item"><i class="fas fa-calendar-week"></i> Départ : <?php echo htmlentities($liste_salles_produit_avis['date_depart']); ?></li>
             </ul>
         </div>
         <div class="col-4">
             <ul class="list-group">
-                <li class="list-group-item"><i class="fas fa-users"></i> Capacité : <?php echo $liste_salles_produit_avis['capacite']; ?></li>
-                <li class="list-group-item"><i class="fas fa-chess-rook"></i> Categorie : <?php echo ucfirst($liste_salles_produit_avis['categorie']); ?></li>
+                <li class="list-group-item"><i class="fas fa-users"></i> Capacité : <?php echo htmlentities($liste_salles_produit_avis['capacite']); ?></li>
+                <li class="list-group-item"><i class="fas fa-chess-rook"></i> Categorie : <?php echo htmlentities(ucfirst($liste_salles_produit_avis['categorie'])); ?></li>
             </ul>
         </div>
         <div class="col-4">
             <ul class="list-group">
-                <li class="list-group-item"><i class="fas fa-map-marker-alt"></i> Adresse : <?php echo $liste_salles_produit_avis['adresse']; ?></li>
-                <li class="list-group-item"><i class="fas fa-tags"></i> Tarif : <?php echo $liste_salles_produit_avis['prix'] . ' €'; ?></li>
+                <li class="list-group-item"><i class="fas fa-map-marker-alt"></i> Adresse : <?php echo htmlentities($liste_salles_produit_avis['adresse']); ?></li>
+                <li class="list-group-item"><i class="fas fa-tags"></i> Tarif : <?php echo htmlentities($liste_salles_produit_avis['prix']) . ' €'; ?></li>
             </ul>
         </div>
     </div>
@@ -92,9 +92,9 @@ include 'inc/nav.inc.php';
             !empty($_POST['pseudo']) &&
             !empty($_POST['note']) &&
             !empty($_POST['commentaire'])){
-                $pseudo = strip_tags(trim($_POST['pseudo']));
-                $note = strip_tags(trim($_POST['note']));
-                $commentaire = strip_tags(trim($_POST['commentaire']));
+                $pseudo = htmlentities(trim($_POST['pseudo']));
+                $note = htmlentities(trim($_POST['note']));
+                $commentaire = htmlentities(trim($_POST['commentaire']));
                 if($pseudo == $_SESSION['membre']['pseudo']){
                     $insertion_commentaire = $pdo->prepare("INSERT INTO avis (id_membre, id_salle, commentaire, note, date_enregistrement) VALUES (:id_membre, :id_salle, :commentaire, :note, NOW())");
                     $insertion_commentaire->bindParam(':id_membre', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
@@ -160,7 +160,7 @@ include 'inc/nav.inc.php';
         $commentaires->execute();
 
         while($liste_commentaires = $commentaires->fetch(PDO::FETCH_ASSOC)){ ?>
-        <div class="alert alert-secondary"><span style="font-weight: bold;"><?php echo ucfirst($liste_commentaires['pseudo']) . '</span> - ' . $liste_commentaires['note'] . ' / 5 étoiles (Le ' . $liste_commentaires['date_enregistrement_avis'] . ')<p>' . $liste_commentaires['commentaire'] . '</p>';?></div>
+        <div class="alert alert-secondary"><span style="font-weight: bold;"><?php echo htmlentities(ucfirst($liste_commentaires['pseudo'])) . '</span> - ' . htmlentities($liste_commentaires['note']) . ' / 5 étoiles (Le ' . htmlentities($liste_commentaires['date_enregistrement_avis']) . ')<p>' . htmlentities($liste_commentaires['commentaire']) . '</p>';?></div>
         
         <?php }
         echo '<ul class="pagination justify-content-center">';
@@ -168,7 +168,7 @@ include 'inc/nav.inc.php';
             if($i == $page_courante){
                 echo '<li class="page-item active"><span class="page-link">' . $i . '</span></li>';
             } else {
-                echo '<li class="page-item"><a class="page-link" href="fiche_produit.php?id_produit=' . $liste_salles_produit_avis['id_produit'] . '&page=' . $i . '">' . $i . '</a></li>';
+                echo '<li class="page-item"><a class="page-link" href="fiche_produit.php?id_produit=' . htmlentities($liste_salles_produit_avis['id_produit']) . '&page=' . $i . '">' . $i . '</a></li>';
             }
         }
         echo '</ul>';
@@ -193,18 +193,18 @@ include 'inc/nav.inc.php';
     while($ligne = $recup_infos_salle->fetch(PDO::FETCH_ASSOC)){
         echo '<div class="col-3">';
         echo '<div class="card mt-3">
-        <img src="' . URL . $liste_salles_produit_avis['photo'] . '" class="card-img-top p-2" alt="' . $ligne['titre'] . '">
+        <img src="' . URL . htmlentities(($liste_salles_produit_avis['photo']) . '" class="card-img-top p-2" alt="' . htmlentities($ligne['titre']) . '">
         <div class="card-body">
         <div class="row">
-            <h5 class="card-title col-8">Salle ' . ucfirst($ligne['titre']) . '</h5>
+            <h5 class="card-title col-8">Salle ' . htmlentities(ucfirst($ligne['titre'])) . '</h5>
             <p class="card-text col-4"><span class="badge-info badge_price">' . $ligne['prix'] . ' €</span></p>
         </div>
-        <p class="card-text"><span class="couleur-star">' . afficheretoile(round($moyenne_avis['moyenne'], 2)) . '</span> <span class="taille-mini">' . round($moyenne_avis['moyenne'], 2) . '/5 étoiles</span></p>
-        <p class="card-text">Lieu : ' . ucfirst($liste_salles_produit_avis['ville']) . '</p>
-        <p class="card-text">' . iconv_substr($liste_salles_produit_avis['description'], 0, 60) . '...</p>
-        <p class="card-text"><i class="fas fa-calendar-week"></i> ' . $ligne['date_arrivee'] . ' au ' . $ligne['date_depart'] . '</p>
+        <p class="card-text"><span class="couleur-star">' . htmlentities(afficheretoile(round($moyenne_avis['moyenne'], 2))) . '</span> <span class="taille-mini">' . htmlentities(round($moyenne_avis['moyenne'], 2)) . '/5 étoiles</span></p>
+        <p class="card-text">Lieu : ' . htmlentities(ucfirst($liste_salles_produit_avis['ville'])) . '</p>
+        <p class="card-text">' . htmlentities(iconv_substr($liste_salles_produit_avis['description'], 0, 60)) . '...</p>
+        <p class="card-text"><i class="fas fa-calendar-week"></i> ' . htmlentities($ligne['date_arrivee']) . ' au ' . htmlentities($ligne['date_depart']) . '</p>
         <div class="row">
-            <a class="btn btn-info col-12" href="fiche_produit.php?id_produit=' . $ligne['id_produit'] . '"><i class="fas fa-search"></i> Voir le produit</a>
+            <a class="btn btn-info col-12" href="fiche_produit.php?id_produit=' . htmlentities($ligne['id_produit']) . '"><i class="fas fa-search"></i> Voir le produit</a>
         </div>
         </div>';
         echo '</div>';

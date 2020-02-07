@@ -18,11 +18,11 @@ if(isset($_POST['confirm_update'])){
 		isset($_POST['prenom']) &&
 		isset($_POST['civilite'])){
 		if($_POST['pseudo'] != $_SESSION['membre']['pseudo'] || $_POST['email'] != $_SESSION['membre']['email'] || $_POST['nom'] != $_SESSION['membre']['nom'] || $_POST['prenom'] != $_SESSION['membre']['prenom'] || $_POST['civilite'] != $_SESSION['membre']['civilite']) {
-			$nouveau_pseudo = strip_tags(trim($_POST['pseudo']));
-			$nouveau_email = strip_tags(trim($_POST['email']));
-			$nouveau_nom = strip_tags(trim($_POST['nom']));
-			$nouveau_prenom = strip_tags(trim($_POST['prenom']));
-			$nouveau_civilite = strip_tags(trim($_POST['civilite']));
+			$nouveau_pseudo = htmlentities(trim($_POST['pseudo']));
+			$nouveau_email = htmlentities(trim($_POST['email']));
+			$nouveau_nom = htmlentities(trim($_POST['nom']));
+			$nouveau_prenom = htmlentities(trim($_POST['prenom']));
+			$nouveau_civilite = htmlentities(trim($_POST['civilite']));
 			if(iconv_strlen($nouveau_pseudo) < 4 || iconv_strlen($nouveau_pseudo) > 20){
 				$msg .= '<div class="alert alert-danger"> ATTENTION,<br> Le pseudo doit avoir entre 4 et 20 caractères</div>';
 			}
@@ -108,8 +108,8 @@ $confirm_mdp = '';
 if(
 	isset($_POST['mdp']) &&
 	isset($_POST['confirm_mdp'])){
-		$mdp = strip_tags(trim($_POST['mdp']));
-		$confirm_mdp = strip_tags(trim($_POST['confirm_mdp']));
+		$mdp = htmlentities(trim($_POST['mdp']));
+		$confirm_mdp = htmlentities(trim($_POST['confirm_mdp']));
 	}
 
 if(isset($_GET['action']) && ($_GET['action'] == 'modifier_mdp')) {
@@ -269,14 +269,14 @@ include 'inc/nav.inc.php';
 			echo '<th class="text-center">N° Commande</th><th class="text-center">N° Produit</th><th class="text-center">Titre</th><th class="text-center">Ville</th><th class="text-center">Date Arrivee</th><th class="text-center">Date Départ</th><th class="text-center">Prix</th><th class="text-center">Date de commande</th>';
 			while($liste_commande = $commande->fetch(PDO::FETCH_ASSOC)) {
 				echo '<tr>';
-				echo '<td>' . $liste_commande['id_commande'] . '</td>';
-				echo '<td>' . $liste_commande['id_produit'] . '</td>';
-				echo '<td>' . $liste_commande['titre'] . '</td>';
-				echo '<td>' . $liste_commande['ville'] . '</td>'; 
-				echo '<td>' . $liste_commande['date_arrivee'] . '</td>';
-				echo '<td>' . $liste_commande['date_depart'] . '</td>';
-				echo '<td>' . $liste_commande['prix'] . '</td>';
-				echo '<td>' . $liste_commande['date_commande'] . '</td>';		
+				echo '<td>' . htmlentities($liste_commande['id_commande']) . '</td>';
+				echo '<td>' . htmlentities($liste_commande['id_produit']) . '</td>';
+				echo '<td>' . htmlentities($liste_commande['titre']) . '</td>';
+				echo '<td>' . htmlentities($liste_commande['ville']) . '</td>'; 
+				echo '<td>' . htmlentities($liste_commande['date_arrivee']) . '</td>';
+				echo '<td>' . htmlentities($liste_commande['date_depart']) . '</td>';
+				echo '<td>' . htmlentities($liste_commande['prix']) . '</td>';
+				echo '<td>' . htmlentities($liste_commande['date_commande']) . '</td>';		
 				echo '</tr>';
 			}
 			

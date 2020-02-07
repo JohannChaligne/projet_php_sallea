@@ -33,8 +33,8 @@ $pseudo_mail = '';
 $mdp = '';
 
 if(isset($_POST['pseudo_mail']) && isset($_POST['mdp'])) {
-    $pseudo_mail = strip_tags(trim($_POST['pseudo_mail']));
-    $mdp = strip_tags(trim($_POST['mdp']));
+    $pseudo_mail = htmlentities(trim($_POST['pseudo_mail']));
+    $mdp = htmlentities(trim($_POST['mdp']));
 
     // Vérification du pseudo dans la BDD
     $membre = $pdo->prepare("SELECT * FROM membre WHERE (pseudo = :pseudo OR email = :pseudo) AND validation_compte IS NOT NULL");
@@ -58,7 +58,7 @@ if(isset($_POST['pseudo_mail']) && isset($_POST['mdp'])) {
             $_SESSION['membre']['civilite'] = $infos_membre['civilite'];
             $_SESSION['membre']['statut'] = $infos_membre['statut'];
 
-            if(strip_tags($_POST['souvenir_session'])){
+            if(htmlentities($_POST['souvenir_session'])){
                 $souvenir_session = str_random(255);
                 $id_membre = $infos_membre['id_membre'];
                 $creation_souvenir_session = $pdo->prepare("UPDATE membre SET souvenir_session = :souvenir_session WHERE id_membre = :id_membre");

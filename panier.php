@@ -72,7 +72,7 @@ if(!empty($_POST['id_produit']) && is_numeric($_POST['id_produit'])){
 
     if($infos_salle_produit->rowCount() > 0){
         $salle_produit = $infos_salle_produit->fetch(PDO::FETCH_ASSOC);
-        $_SESSION['panier']['id_produit'][] = strip_tags($_POST['id_produit']);
+        $_SESSION['panier']['id_produit'][] = htmlentities($_POST['id_produit']);
         $_SESSION['panier']['date_arrivee'][] = $salle_produit['date_arrivee'];
         $_SESSION['panier']['date_depart'][] = $salle_produit['date_depart'];
         $_SESSION['panier']['prix'][] = $salle_produit['prix'];
@@ -136,7 +136,7 @@ include 'inc/nav.inc.php';
                             echo '<a href="inscription.php" class=" btn btn-warning">S\'inscrire</a></div>';
                         }
                         echo '</td><td colspan="2">';
-                        echo '<div><b>Montant total TTC :</b><span class="float-right">'.$montant_total.' €</span></div>';
+                        echo '<div><b>Montant total TTC :</b><span class="float-right">'.htmlentities($montant_total).' €</span></div>';
                         echo '</td>';
                         echo '<tr>';
                     }else{

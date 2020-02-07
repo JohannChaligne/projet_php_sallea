@@ -65,14 +65,14 @@ if(
 
 	// récupération de l'id_produit dans le cadre de la modification
 	if(!empty($_POST['id_produit'])){
-		$id_produit = strip_tags(trim($_POST['id_produit']));
+		$id_produit = htmlentities(trim($_POST['id_produit']));
 	}
     
     
-    $date_arrivee = strip_tags(date('Y/m/d', strtotime($_POST['date_arrivee'])));
-    $date_depart = strip_tags(date('Y/m/d', strtotime($_POST['date_depart'])));
+    $date_arrivee = htmlentities(date('Y/m/d', strtotime($_POST['date_arrivee'])));
+    $date_depart = htmlentities(date('Y/m/d', strtotime($_POST['date_depart'])));
 	$salle = explode(' -', $_POST['salle']);
-    $prix = strip_tags(trim($_POST['prix']));
+    $prix = htmlentities(trim($_POST['prix']));
 
     // Conditions pour les valeurs des dates soient remplies
     if(empty($date_arrivee) && empty($date_depart)){
@@ -158,7 +158,7 @@ include 'inc/nav_admin.inc.php';
                         while($ligne = $affichage_salle->fetch(PDO::FETCH_ASSOC)){
                             echo '<option ';
                             if($salle == $ligne['id_salle']){ echo 'selected'; }
-                            echo ' >' . $ligne['id_salle'] . ' - ' . $ligne['titre'] . ' - ' . $ligne['adresse'] . ', ' . $ligne['cp'] . ', ' . $ligne['ville'] . ' - ' . $ligne['capacite'] . ' personnes</option>';
+                            echo ' >' . htmlentities($ligne['id_salle']) . ' - ' . htmlentities($ligne['titre']) . ' - ' . htmlentities($ligne['adresse']) . ', ' . htmlentities($ligne['cp']) . ', ' . htmlentities($ligne['ville']) . ' - ' . htmlentities($ligne['capacite']) . ' personnes</option>';
                         } 
                         ?>
                     </select>  
@@ -190,13 +190,13 @@ include 'inc/nav_admin.inc.php';
         // une boucle pour afficher les salles dans le tableau
         while($ligne = $recup_tab_salle->fetch(PDO::FETCH_ASSOC)){
             echo '<tr>';
-            echo '<td>' . $ligne['id_produit'] . '</td>';
-            echo '<td>' . $ligne['date_arrivee'] . '</td>';
-            echo '<td>' . $ligne['date_depart'] . '</td>';
-            echo '<td>' . $ligne['id_salle'] . ' - ' . $ligne['titre'] . ' - <img src="' . URL . $ligne['photo'] . '" class="img-thumbnail" width="100"></td>';
-            echo '<td>' . $ligne['prix'] . '</td>';
-            echo '<td>' . $ligne['etat'] . '</td>';
-            echo '<td><a href="?action=modifier&id_produit=' . $ligne['id_produit'] . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_produit=' . $ligne['id_produit'] . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
+            echo '<td>' . htmlentities($ligne['id_produit']) . '</td>';
+            echo '<td>' . htmlentities($ligne['date_arrivee']) . '</td>';
+            echo '<td>' . htmlentities($ligne['date_depart']) . '</td>';
+            echo '<td>' . htmlentities($ligne['id_salle']) . ' - ' . htmlentities($ligne['titre']) . ' - <img src="' . URL . htmlentities($ligne['photo']) . '" class="img-thumbnail" width="100"></td>';
+            echo '<td>' . htmlentities($ligne['prix']) . '</td>';
+            echo '<td>' . htmlentities($ligne['etat']) . '</td>';
+            echo '<td><a href="?action=modifier&id_produit=' . htmlentities($ligne['id_produit']) . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_produit=' . htmlentities($ligne['id_produit']) . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
             echo '</tr>';
         }
 
