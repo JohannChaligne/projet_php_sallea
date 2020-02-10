@@ -155,11 +155,11 @@ include 'inc/nav_admin.inc.php';
                 <div class="form-group">
                     <label for="note">Note</label>
                     <select name="note" id="note" class="w-100">
-                        <option value="1">1</option>
-                        <option value="2" <?php if($note == '2'){ echo 'selected'; } ?> >2</option>
-                        <option value="3" <?php if($note == '3'){ echo 'selected'; } ?> >3</option>
-                        <option value="4" <?php if($note == '4'){ echo 'selected'; } ?> >4</option>
-                        <option value="5" <?php if($note == '5'){ echo 'selected'; } ?> >5</option>
+                        <option value="1">1 / 5 étoiles</option>
+                        <option value="2" <?php if($note == '2'){ echo 'selected'; } ?> >2 / 5 étoiles</option>
+                        <option value="3" <?php if($note == '3'){ echo 'selected'; } ?> >3 / 5 étoiles</option>
+                        <option value="4" <?php if($note == '4'){ echo 'selected'; } ?> >4 / 5 étoiles</option>
+                        <option value="5" <?php if($note == '5'){ echo 'selected'; } ?> >5 / 5 étoiles</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -189,8 +189,8 @@ include 'inc/nav_admin.inc.php';
         echo '<td>' . htmlentities($ligne['id_membre']) . ' - ' . htmlentities($ligne['email']) . '</td>';
         echo '<td>' . htmlentities($ligne['id_salle']) . ' - ' . htmlentities($ligne['titre']) . '</td>';
         echo '<td>' . htmlentities($ligne['commentaire']) . '</td>';
-        echo '<td>' . htmlentities($ligne['note']) . '</td>';
-        echo '<td>' . htmlentities($ligne['date_enregistrement_avis'] . '</td>';
+        echo '<td>' . htmlentities($ligne['note']) . ' / 5 étoiles</td>';
+        echo '<td>' . htmlentities($ligne['date_enregistrement_avis']) . '</td>';
         echo '<td><a href="?action=modifier&id_avis=' . htmlentities($ligne['id_avis']) . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_avis=' . htmlentities($ligne['id_avis']) . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
 
         echo '</tr>';

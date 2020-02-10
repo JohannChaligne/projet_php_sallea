@@ -291,7 +291,7 @@ include 'inc/nav_admin.inc.php';
             echo '<td>' . htmlentities($ligne['email']) . '</td>';
             echo '<td>' . htmlentities($ligne['civilite']) . '</td>';
             echo '<td>' . htmlentities($ligne['statut']) . '</td>';
-            echo '<td>' . htmlentities($ligne['date_enregistrement'] . '</td>';
+            echo '<td>' . htmlentities($ligne['date_enregistrement']) . '</td>';
             echo '<td><a href="?action=modifier&id_membre=' . htmlentities($ligne['id_membre']) . '" class="btn" title="Modifier"><i class="fas fa-edit"></i></a><a href="?action=supprimer&id_membre=' . htmlentities($ligne['id_membre']) . '" class="btn" onclick="return(confirm(\'Etes-vous sur ?\'))" title="Supprimer"><i class="fas fa-trash-alt"></i></td>';
 
             echo '</tr>';

@@ -31,7 +31,7 @@ include 'inc/nav.inc.php';
   <div class="starter-template marge_haute">
     <div class="row">
         <div class="col-8">
-            <h1>Salle <?php echo htmlentities(ucfirst($liste_salles_produit_avis['titre'])) . ' <span class="couleur-star">' . htmlentities(afficheretoile(round($moyenne_avis['moyenne'], 2))) . '</span> <span class="taille-mini">' . htmlentities(round($moyenne_avis['moyenne'], 2)) . '/5 étoiles</span>'; ?></h1>
+            <h1>Salle <?php echo htmlentities(ucfirst($liste_salles_produit_avis['titre'])) . ' <span class="couleur-star">' . afficheretoile(round($moyenne_avis['moyenne'], 2)) . '</span> <span class="taille-mini">' . htmlentities(round($moyenne_avis['moyenne'], 2)) . '/5 étoiles</span>'; ?></h1>
         </div>
         <div class="offset-2 col-2">
         <?php 
@@ -193,13 +193,13 @@ include 'inc/nav.inc.php';
     while($ligne = $recup_infos_salle->fetch(PDO::FETCH_ASSOC)){
         echo '<div class="col-3">';
         echo '<div class="card mt-3">
-        <img src="' . URL . htmlentities(($liste_salles_produit_avis['photo']) . '" class="card-img-top p-2" alt="' . htmlentities($ligne['titre']) . '">
+        <img src="' . URL . htmlentities($liste_salles_produit_avis['photo']) . '" class="card-img-top p-2" alt="' . htmlentities($ligne['titre']) . '">
         <div class="card-body">
         <div class="row">
             <h5 class="card-title col-8">Salle ' . htmlentities(ucfirst($ligne['titre'])) . '</h5>
-            <p class="card-text col-4"><span class="badge-info badge_price">' . $ligne['prix'] . ' €</span></p>
+            <p class="card-text col-4"><span class="badge-info badge_price">' . htmlentities($ligne['prix']) . ' €</span></p>
         </div>
-        <p class="card-text"><span class="couleur-star">' . htmlentities(afficheretoile(round($moyenne_avis['moyenne'], 2))) . '</span> <span class="taille-mini">' . htmlentities(round($moyenne_avis['moyenne'], 2)) . '/5 étoiles</span></p>
+        <p class="card-text"><span class="couleur-star">' . afficheretoile(round($moyenne_avis['moyenne'], 2)) . '</span> <span class="taille-mini">' . htmlentities(round($moyenne_avis['moyenne'], 2)) . '/5 étoiles</span></p>
         <p class="card-text">Lieu : ' . htmlentities(ucfirst($liste_salles_produit_avis['ville'])) . '</p>
         <p class="card-text">' . htmlentities(iconv_substr($liste_salles_produit_avis['description'], 0, 60)) . '...</p>
         <p class="card-text"><i class="fas fa-calendar-week"></i> ' . htmlentities($ligne['date_arrivee']) . ' au ' . htmlentities($ligne['date_depart']) . '</p>

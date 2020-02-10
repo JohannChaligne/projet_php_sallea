@@ -56,7 +56,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'payer' && !empty($_SESSION['pan
     }
 
     unset($_SESSION['panier']);
-    $msg .= '<div class="container pt-2 mt-4"><div class="row text-center"><div class="col-6 offset-3 alert alert own-alert">Commande enregistrée ! Son numéro est le '.$id_commande.'. Vous allez recevoir un mail de confirmation de votre commande.<br> Merci de nous avoir fait confiance.<br> Vos produits arrivent bientôt <i class="far fa-smile"></i></div></div></div>';
+    $msg .= '<div class="container pt-2 mt-4"><div class="row text-center"><div class="col-6 offset-3 alert alert own-alert">Commande enregistrée ! Son numéro est le '.$id_commande.'.<br> Vous allez recevoir un mail de confirmation de votre commande.<br> Merci de nous avoir fait confiance.<i class="far fa-smile"></i><br></div></div></div>';
 }
 
 //// Création panier

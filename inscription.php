@@ -30,7 +30,7 @@ if(
         $email = htmlentities(trim($_POST['email']));
         $nom = htmlentities(trim($_POST['nom']));
         $prenom = htmlentities(trim($_POST['prenom']));
-        $civilite = striphtmlentities_tags(trim($_POST['civilite'])); 
+        $civilite = htmlentities(trim($_POST['civilite'])); 
         
         if(iconv_strlen($pseudo) < 4 || iconv_strlen($pseudo) > 20){
             $msg .= '<div class="alert alert-danger"> ATTENTION,<br> Le pseudo doit avoir entre 4 et 20 caractères</div>';

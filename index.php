@@ -39,7 +39,7 @@ include 'inc/nav.inc.php';
                   <h5 class="card-title col-8">Salle ' . htmlentities(ucfirst($salle_pop['titre'])) . '</h5>
                   <p class="card-text col-4"><span class="badge-info badge_price">' . htmlentities($salle_pop['prix']) . ' €</span></p>
               </div>
-              <p class="card-text"><span class="couleur-star">' . htmlentities(afficheretoile(round($liste_avis_pop['moyenne'], 2))) . '</span> <span class="taille-mini">' . htmlentities(round($liste_avis_pop['moyenne'], 2)) . '/5 étoiles</span></p>
+              <p class="card-text"><span class="couleur-star">' . afficheretoile(round($liste_avis_pop['moyenne'], 2)) . '</span> <span class="taille-mini">' . htmlentities(round($liste_avis_pop['moyenne'], 2)) . '/5 étoiles</span></p>
               <p class="card-text">Lieu : ' . htmlentities(ucfirst($salle_pop['ville'])) . '</p>
               <p class="card-text">' . htmlentities(iconv_substr($salle_pop['description'], 0, 60)) . '...</p>
               <p class="card-text"><i class="fas fa-calendar-week"></i> ' . htmlentities($salle_pop['date_arrivee']) . ' au ' . htmlentities($salle_pop['date_depart']) . '</p>
